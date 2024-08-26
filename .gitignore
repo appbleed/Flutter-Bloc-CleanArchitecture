@@ -67,3 +67,4 @@ env/
 .fvm/
 *.mdb
 pubspec_overrides.yaml
+upload-keystore.jks

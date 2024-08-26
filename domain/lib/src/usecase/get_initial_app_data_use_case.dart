@@ -35,6 +35,6 @@ class GetInitialAppDataOutput extends BaseOutput with _$GetInitialAppDataOutput 
   const factory GetInitialAppDataOutput({
     @Default(false) bool isLoggedIn,
     @Default(false) bool isDarkMode,
-    @Default(LanguageCode.ja) LanguageCode languageCode,
+    @Default(LanguageCode.en) LanguageCode languageCode,
   }) = _GetInitialAppDataOutput;
 }

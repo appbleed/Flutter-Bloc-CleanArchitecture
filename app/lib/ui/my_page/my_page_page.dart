@@ -46,11 +46,11 @@ class _MyPagePageState extends BasePageState<MyPagePage, MyPageBloc> {
                 builder: (context, state) {
                   return SwitchListTile.adaptive(
                     title: Text(
-                      S.current.japanese,
+                      S.current.english,
                       style: AppTextStyles.s14w400Primary(),
                     ),
                     tileColor: AppColors.current.primaryColor,
-                    value: state.languageCode == LanguageCode.ja,
+                    value: state.languageCode == LanguageCode.en,
                     onChanged: (isJa) => appBloc.add(
                       AppLanguageChanged(languageCode: isJa ? LanguageCode.ja : LanguageCode.en),
                     ),

@@ -1,0 +1,10 @@
+# melos_managed_dependency_overrides: domain,nals_lints,resources,shared
+dependency_overrides:
+  domain:
+    path: ../domain
+  nals_lints:
+    path: ../nals_lints
+  resources:
+    path: ../resources
+  shared:
+    path: ../shared

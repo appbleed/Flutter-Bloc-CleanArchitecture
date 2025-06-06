@@ -1,0 +1,8 @@
+# melos_managed_dependency_overrides: nals_lints,resources,shared
+dependency_overrides:
+  nals_lints:
+    path: ../nals_lints
+  resources:
+    path: ../resources
+  shared:
+    path: ../shared

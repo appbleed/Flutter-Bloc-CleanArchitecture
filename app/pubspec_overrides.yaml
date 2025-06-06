@@ -1,0 +1,14 @@
+# melos_managed_dependency_overrides: data,domain,initializer,nals_lints,resources,shared
+dependency_overrides:
+  data:
+    path: ../data
+  domain:
+    path: ../domain
+  initializer:
+    path: ../initializer
+  nals_lints:
+    path: ../nals_lints
+  resources:
+    path: ../resources
+  shared:
+    path: ../shared

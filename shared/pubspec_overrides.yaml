@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: nals_lints
+dependency_overrides:
+  nals_lints:
+    path: ../nals_lints

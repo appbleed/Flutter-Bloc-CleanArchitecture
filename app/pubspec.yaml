@@ -29,14 +29,13 @@ dependencies:
   initializer:
     path: ../initializer
   injectable: 2.5.0
-  js: ^0.7.0
   resources:
     path: ../resources
   rxdart: 0.28.0
   shared:
     path: ../shared
   tuple: 2.0.2
-  vm_service: 15.0.2
+  vm_service: 15.0.0
 dev_dependencies:
   auto_route_generator: 10.2.3
   bloc_test: 10.0.0

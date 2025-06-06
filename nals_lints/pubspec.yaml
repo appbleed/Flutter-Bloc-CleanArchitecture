@@ -12,4 +12,4 @@ dependencies:
   custom_lint_builder: 0.7.5
   hotreloader: 4.3.0
   source_gen: 2.0.0
-  vm_service: 15.0.2
+  vm_service: 15.0.0

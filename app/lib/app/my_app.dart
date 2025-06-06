@@ -20,6 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends BasePageState<MyApp, AppBloc> {
   final _appRouter = GetIt.instance.get<AppRouter>();
+  bool _hasPerformedInitialNavigation = false;
 
   @override
   bool get isAppWidget => true;
@@ -28,6 +29,23 @@ class _MyAppState extends BasePageState<MyApp, AppBloc> {
   void initState() {
     super.initState();
     bloc.add(const AppInitiated());
+
+    // Perform initial navigation after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _performInitialNavigation();
+    });
+  }
+
+  void _performInitialNavigation() {
+    if (_hasPerformedInitialNavigation) return;
+    _hasPerformedInitialNavigation = true;
+
+    final initialRoutes = widget.initialResource.initialRoutes;
+    if (initialRoutes.isNotEmpty) {
+      // Navigate to the first initial route
+      final firstRoute = initialRoutes.first;
+      navigator.replace(firstRoute);
+    }
   }
 
   @override

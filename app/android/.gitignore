@@ -14,3 +14,4 @@ key.properties
 keybase64.txt
 distribution
 /app/build
+android/app/.cxx/*

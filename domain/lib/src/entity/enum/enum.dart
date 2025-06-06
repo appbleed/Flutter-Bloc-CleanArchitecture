@@ -36,7 +36,7 @@ enum LanguageCode {
   final String localeCode;
   final String serverValue;
 
-  static const defaultValue = ja;
+  static const defaultValue = en;
 }
 
 enum NotificationType {

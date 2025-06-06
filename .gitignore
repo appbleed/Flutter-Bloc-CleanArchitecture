@@ -65,3 +65,5 @@ tools/gen_text_styles/output/
 env/
 .fvm/
 *.mdb
+app/android/app/.cxx/*
+android/app/.cxx/*

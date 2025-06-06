@@ -7,6 +7,8 @@ part 'common_state.freezed.dart';
 
 @freezed
 class CommonState extends BaseBlocState with _$CommonState {
+  const CommonState._();
+
   const factory CommonState({
     AppExceptionWrapper? appExceptionWrapper,
     @Default(0) int loadingCount,

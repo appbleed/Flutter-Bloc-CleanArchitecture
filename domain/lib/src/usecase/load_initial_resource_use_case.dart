@@ -6,8 +6,8 @@ import '../../domain.dart';
 part 'load_initial_resource_use_case.freezed.dart';
 
 @Injectable()
-class LoadInitialResourceUseCase
-    extends BaseSyncUseCase<LoadInitialResourceInput, LoadInitialResourceOutput> {
+class LoadInitialResourceUseCase extends BaseSyncUseCase<
+    LoadInitialResourceInput, LoadInitialResourceOutput> {
   const LoadInitialResourceUseCase(this._repository);
 
   final Repository _repository;
@@ -15,22 +15,28 @@ class LoadInitialResourceUseCase
   @protected
   @override
   LoadInitialResourceOutput buildUseCase(LoadInitialResourceInput input) {
-    final initialRoutes = [_repository.isLoggedIn ? InitialAppRoute.main : InitialAppRoute.login];
+    final initialRoutes = [
+      _repository.isLoggedIn ? InitialAppRoute.main : InitialAppRoute.login
+    ];
 
     return LoadInitialResourceOutput(initialRoutes: initialRoutes);
   }
 }
 
 @freezed
-class LoadInitialResourceInput extends BaseInput with _$LoadInitialResourceInput {
+class LoadInitialResourceInput extends BaseInput
+    with _$LoadInitialResourceInput {
+  const LoadInitialResourceInput._();
+
   const factory LoadInitialResourceInput() = _LoadInitialResourceInput;
 }
 
 @freezed
-class LoadInitialResourceOutput extends BaseOutput with _$LoadInitialResourceOutput {
+class LoadInitialResourceOutput extends BaseOutput
+    with _$LoadInitialResourceOutput {
   const LoadInitialResourceOutput._();
 
   const factory LoadInitialResourceOutput({
-    @Default([InitialAppRoute.main]) List<InitialAppRoute> initialRoutes,
+    @Default(<AppRouteInfo>[]) List<AppRouteInfo> initialRoutes,
   }) = _LoadInitialResourceOutput;
 }

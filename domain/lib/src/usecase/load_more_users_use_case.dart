@@ -7,7 +7,8 @@ import '../../../domain.dart';
 part 'load_more_users_use_case.freezed.dart';
 
 @Injectable()
-class LoadMoreUsersUseCase extends BaseLoadMoreUseCase<LoadMoreUsersInput, User> {
+class LoadMoreUsersUseCase
+    extends BaseLoadMoreUseCase<LoadMoreUsersInput, User> {
   LoadMoreUsersUseCase(this._repository) : super(initPage: 2);
 
   final Repository _repository;
@@ -24,5 +25,9 @@ class LoadMoreUsersUseCase extends BaseLoadMoreUseCase<LoadMoreUsersInput, User>
 
 @freezed
 class LoadMoreUsersInput extends BaseInput with _$LoadMoreUsersInput {
-  const factory LoadMoreUsersInput() = _LoadMoreUsersInput;
+  const LoadMoreUsersInput._();
+
+  const factory LoadMoreUsersInput({
+    @Default(0) int page,
+  }) = _LoadMoreUsersInput;
 }

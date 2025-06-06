@@ -8,7 +8,8 @@ part 'get_users_use_case.freezed.dart';
 
 @Injectable()
 class GetUsersUseCase extends BaseLoadMoreUseCase<GetUsersInput, User> {
-  GetUsersUseCase(this._repository) : super(initPage: PagingConstants.initialPage);
+  GetUsersUseCase(this._repository)
+      : super(initPage: PagingConstants.initialPage);
 
   final Repository _repository;
 
@@ -24,5 +25,7 @@ class GetUsersUseCase extends BaseLoadMoreUseCase<GetUsersInput, User> {
 
 @freezed
 class GetUsersInput extends BaseInput with _$GetUsersInput {
+  const GetUsersInput._();
+
   const factory GetUsersInput() = _GetUsersInput;
 }

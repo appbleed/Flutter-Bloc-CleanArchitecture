@@ -7,7 +7,8 @@ import '../../../domain.dart';
 part 'reset_password_use_case.freezed.dart';
 
 @Injectable()
-class ResetPasswordUseCase extends BaseFutureUseCase<ResetPasswordInput, ResetPasswordOutput> {
+class ResetPasswordUseCase
+    extends BaseFutureUseCase<ResetPasswordInput, ResetPasswordOutput> {
   const ResetPasswordUseCase(this._repository);
 
   final Repository _repository;
@@ -22,7 +23,8 @@ class ResetPasswordUseCase extends BaseFutureUseCase<ResetPasswordInput, ResetPa
       throw const ValidationException(ValidationExceptionKind.invalidPassword);
     }
     if (input.password != input.confirmPassword) {
-      throw const ValidationException(ValidationExceptionKind.passwordsAreNotMatch);
+      throw const ValidationException(
+          ValidationExceptionKind.passwordsAreNotMatch);
     }
     if (!ValidationUtils.isValidEmail(input.email)) {
       throw const ValidationException(ValidationExceptionKind.invalidEmail);
@@ -41,11 +43,13 @@ class ResetPasswordUseCase extends BaseFutureUseCase<ResetPasswordInput, ResetPa
 
 @freezed
 class ResetPasswordInput extends BaseInput with _$ResetPasswordInput {
+  const ResetPasswordInput._();
+
   const factory ResetPasswordInput({
-    required String token,
-    required String email,
-    required String password,
-    required String confirmPassword,
+    @Default('') String email,
+    @Default('') String password,
+    @Default('') String confirmPassword,
+    @Default('') String token,
   }) = _ResetPasswordInput;
 }
 

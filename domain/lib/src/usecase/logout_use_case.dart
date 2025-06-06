@@ -26,7 +26,9 @@ class LogoutUseCase extends BaseFutureUseCase<LogoutInput, LogoutOutput> {
 
 @freezed
 class LogoutInput extends BaseInput with _$LogoutInput {
-  const factory LogoutInput() = _LogoutUseCase;
+  const LogoutInput._();
+
+  const factory LogoutInput() = _LogoutInput;
 }
 
 @freezed

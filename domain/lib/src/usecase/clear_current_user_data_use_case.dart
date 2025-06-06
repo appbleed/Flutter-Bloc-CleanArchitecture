@@ -6,8 +6,8 @@ import '../../domain.dart';
 part 'clear_current_user_data_use_case.freezed.dart';
 
 @Injectable()
-class ClearCurrentUserDataUseCase
-    extends BaseFutureUseCase<ClearCurrentUserDataInput, ClearCurrentUserDataOutput> {
+class ClearCurrentUserDataUseCase extends BaseFutureUseCase<
+    ClearCurrentUserDataInput, ClearCurrentUserDataOutput> {
   const ClearCurrentUserDataUseCase(this._repository);
 
   final Repository _repository;
@@ -24,12 +24,16 @@ class ClearCurrentUserDataUseCase
 }
 
 @freezed
-class ClearCurrentUserDataInput extends BaseInput with _$ClearCurrentUserDataInput {
+class ClearCurrentUserDataInput extends BaseInput
+    with _$ClearCurrentUserDataInput {
+  const ClearCurrentUserDataInput._();
+
   const factory ClearCurrentUserDataInput() = _ClearCurrentUserDataInput;
 }
 
 @freezed
-class ClearCurrentUserDataOutput extends BaseOutput with _$ClearCurrentUserDataOutput {
+class ClearCurrentUserDataOutput extends BaseOutput
+    with _$ClearCurrentUserDataOutput {
   const ClearCurrentUserDataOutput._();
 
   const factory ClearCurrentUserDataOutput() = _ClearCurrentUserDataOutput;

@@ -1,3 +1,6 @@
+// TODO: Replace with alternative database solution or remove if not needed
+// ObjectBox was removed due to dependency conflicts
+
 import 'package:objectbox/objectbox.dart';
 
 import 'local_image_url_data.dart';
@@ -23,7 +26,11 @@ class LocalUserData {
 
   @override
   int get hashCode {
-    return id.hashCode ^ email.hashCode ^ money.hashCode ^ gender.hashCode ^ birthday.hashCode;
+    return id.hashCode ^
+        email.hashCode ^
+        money.hashCode ^
+        gender.hashCode ^
+        birthday.hashCode;
   }
 
   @override

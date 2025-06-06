@@ -8,9 +8,10 @@ part 'home_state.freezed.dart';
 
 @freezed
 class HomeState extends BaseBlocState with _$HomeState {
-  factory HomeState({
-    @Default(LoadMoreOutput<User>(data: <User>[])) LoadMoreOutput<User> users,
-    @Default(false) bool isShimmerLoading,
-    AppException? loadUsersException,
+  const HomeState._();
+
+  const factory HomeState({
+    @Default(PagedList(data: <User>[])) PagedList<User> users,
+    @Default(0) int loadMoreUsersCount,
   }) = _HomeState;
 }

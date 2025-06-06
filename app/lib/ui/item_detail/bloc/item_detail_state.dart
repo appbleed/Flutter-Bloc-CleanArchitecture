@@ -6,6 +6,8 @@ part 'item_detail_state.freezed.dart';
 
 @freezed
 class ItemDetailState extends BaseBlocState with _$ItemDetailState {
+  const ItemDetailState._();
+
   const factory ItemDetailState({
     @Default('') String id,
   }) = _ItemDetailState;

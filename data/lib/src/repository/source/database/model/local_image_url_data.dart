@@ -1,3 +1,6 @@
+// TODO: Replace with alternative database solution or remove if not needed
+// ObjectBox was removed due to dependency conflicts
+
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
@@ -18,7 +21,11 @@ class LocalImageUrlData {
 
   @override
   int get hashCode {
-    return id.hashCode ^ origin.hashCode ^ sm.hashCode ^ md.hashCode ^ lg.hashCode;
+    return id.hashCode ^
+        origin.hashCode ^
+        sm.hashCode ^
+        md.hashCode ^
+        lg.hashCode;
   }
 
   @override

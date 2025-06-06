@@ -11,7 +11,7 @@ class Func0<R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -28,7 +28,7 @@ class Func1<P0, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -45,7 +45,7 @@ class Func2<P0, P1, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -62,7 +62,7 @@ class Func3<P0, P1, P2, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -79,7 +79,7 @@ class Func4<P0, P1, P2, P3, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -96,7 +96,7 @@ class Func5<P0, P1, P2, P3, P4, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -113,7 +113,7 @@ class Func6<P0, P1, P2, P3, P4, P5, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -130,7 +130,7 @@ class Func7<P0, P1, P2, P3, P4, P5, P6, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -147,7 +147,7 @@ class Func8<P0, P1, P2, P3, P4, P5, P6, P7, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }
@@ -164,7 +164,7 @@ class Func9<P0, P1, P2, P3, P4, P5, P6, P7, P8, R> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return true;
   }
 }

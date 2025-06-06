@@ -11,6 +11,8 @@ abstract class AppEvent extends BaseBlocEvent {
 
 @freezed
 class IsLoggedInStatusChanged extends AppEvent with _$IsLoggedInStatusChanged {
+  const IsLoggedInStatusChanged._();
+
   const factory IsLoggedInStatusChanged({
     required bool isLoggedIn,
   }) = _IsLoggedInStatusChanged;
@@ -18,13 +20,17 @@ class IsLoggedInStatusChanged extends AppEvent with _$IsLoggedInStatusChanged {
 
 @freezed
 class AppThemeChanged extends AppEvent with _$AppThemeChanged {
+  const AppThemeChanged._();
+
   const factory AppThemeChanged({
-    required bool isDarkTheme,
+    required bool isDarkMode,
   }) = _AppThemeChanged;
 }
 
 @freezed
 class AppLanguageChanged extends AppEvent with _$AppLanguageChanged {
+  const AppLanguageChanged._();
+
   const factory AppLanguageChanged({
     required LanguageCode languageCode,
   }) = _AppLanguageChanged;
@@ -32,5 +38,7 @@ class AppLanguageChanged extends AppEvent with _$AppLanguageChanged {
 
 @freezed
 class AppInitiated extends AppEvent with _$AppInitiated {
+  const AppInitiated._();
+
   const factory AppInitiated() = _AppInitiated;
 }

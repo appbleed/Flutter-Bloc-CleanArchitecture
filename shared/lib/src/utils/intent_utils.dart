@@ -5,8 +5,10 @@ class IntentUtils {
     required String url,
     bool inApp = false,
   }) async {
-    return await canLaunch(url)
-        ? await launch(url, forceSafariVC: inApp, forceWebView: inApp, enableJavaScript: true)
+    final uri = Uri.parse(url);
+    return await canLaunchUrl(uri)
+        ? await launchUrl(uri,
+            mode: inApp ? LaunchMode.inAppWebView : LaunchMode.platformDefault)
         : false;
   }
 }

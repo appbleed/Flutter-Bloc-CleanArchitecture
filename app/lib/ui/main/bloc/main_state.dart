@@ -6,7 +6,9 @@ part 'main_state.freezed.dart';
 
 @freezed
 class MainState extends BaseBlocState with _$MainState {
+  const MainState._();
+
   const factory MainState({
-    @Default('') String id,
+    @Default(0) int currentBottomTabIndex,
   }) = _MainState;
 }

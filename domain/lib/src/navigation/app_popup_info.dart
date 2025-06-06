@@ -5,7 +5,9 @@ part 'app_popup_info.freezed.dart';
 
 /// dialog, bottomsheet
 @freezed
-class AppPopupInfo with _$AppPopupInfo {
+abstract class AppPopupInfo with _$AppPopupInfo {
+  const AppPopupInfo._();
+
   const factory AppPopupInfo.confirmDialog({
     @Default('') String message,
     Func0<void>? onPressed,

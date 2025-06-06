@@ -8,10 +8,17 @@ import '../../app.dart';
 class AppRouteInfoMapper extends BaseRouteInfoMapper {
   @override
   PageRouteInfo map(AppRouteInfo appRouteInfo) {
-    return appRouteInfo.when(
-      login: () => const LoginRoute(),
-      main: () => const MainRoute(),
-      itemDetail: (user) => ItemDetailRoute(user: user),
-    );
+    switch (appRouteInfo.runtimeType.toString()) {
+      case '_Login':
+        return const LoginRoute();
+      case '_Main':
+        return const MainRoute();
+      case '_ItemDetail':
+        final itemDetail = appRouteInfo as dynamic;
+        return ItemDetailRoute(user: itemDetail.user);
+      default:
+        throw UnimplementedError(
+            'Unknown AppRouteInfo type: ${appRouteInfo.runtimeType}');
+    }
   }
 }

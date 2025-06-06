@@ -10,19 +10,21 @@ import '../../app.dart';
 class AppPopupInfoMapper extends BasePopupInfoMapper {
   @override
   Widget map(AppPopupInfo appPopupInfo, AppNavigator navigator) {
-    return appPopupInfo.when(
-      confirmDialog: (message, onPressed) {
+    switch (appPopupInfo.runtimeType.toString()) {
+      case '_ConfirmDialog':
+        final confirmDialog = appPopupInfo as dynamic;
         return CommonDialog(
           actions: [
             PopupButton(
               text: S.current.ok,
-              onPressed: onPressed ?? Func0(() => navigator.pop()),
+              onPressed:
+                  confirmDialog.onPressed ?? Func0(() => navigator.pop()),
             ),
           ],
-          message: message,
+          message: confirmDialog.message ?? '',
         );
-      },
-      errorWithRetryDialog: (message, onRetryPressed) {
+      case '_ErrorWithRetryDialog':
+        final errorDialog = appPopupInfo as dynamic;
         return CommonDialog(
           actions: [
             PopupButton(
@@ -31,30 +33,34 @@ class AppPopupInfoMapper extends BasePopupInfoMapper {
             ),
             PopupButton(
               text: S.current.retry,
-              onPressed: onRetryPressed ?? Func0(() => navigator.pop()),
+              onPressed:
+                  errorDialog.onRetryPressed ?? Func0(() => navigator.pop()),
               isDefault: true,
             ),
           ],
-          message: message,
+          message: errorDialog.message ?? '',
         );
-      },
-      requiredLoginDialog: () => CommonDialog.adaptive(
-        title: S.current.login,
-        message: S.current.login,
-        actions: [
-          PopupButton(
-            text: S.current.cancel,
-            onPressed: Func0(() => navigator.pop()),
-          ),
-          PopupButton(
-            text: S.current.login,
-            onPressed: Func0(() async {
-              await navigator.pop();
-              await navigator.push(const AppRouteInfo.login());
-            }),
-          ),
-        ],
-      ),
-    );
+      case '_RequiredLoginDialog':
+        return CommonDialog.adaptive(
+          title: S.current.login,
+          message: S.current.login,
+          actions: [
+            PopupButton(
+              text: S.current.cancel,
+              onPressed: Func0(() => navigator.pop()),
+            ),
+            PopupButton(
+              text: S.current.login,
+              onPressed: Func0(() async {
+                await navigator.pop();
+                await navigator.push(const AppRouteInfo.login());
+              }),
+            ),
+          ],
+        );
+      default:
+        throw UnimplementedError(
+            'Unknown AppPopupInfo type: ${appPopupInfo.runtimeType}');
+    }
   }
 }

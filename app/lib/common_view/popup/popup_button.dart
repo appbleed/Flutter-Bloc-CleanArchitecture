@@ -4,7 +4,7 @@ import 'package:shared/shared.dart';
 part 'popup_button.freezed.dart';
 
 @freezed
-class PopupButton with _$PopupButton {
+abstract class PopupButton with _$PopupButton {
   const PopupButton._();
 
   const factory PopupButton({

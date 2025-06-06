@@ -10,7 +10,8 @@ class CommonPagedSliverGrid<T> extends StatelessWidget {
     required this.itemBuilder,
     required this.gridDelegate,
     this.animateTransitions = true,
-    this.transitionDuration = DurationConstants.defaultListGridTransitionDuration,
+    this.transitionDuration =
+        DurationConstants.defaultListGridTransitionDuration,
     this.firstPageErrorIndicator,
     this.newPageErrorIndicator,
     this.firstPageProgressIndicator,
@@ -62,7 +63,8 @@ class CommonPagedSliverGrid<T> extends StatelessWidget {
       newPageErrorIndicatorBuilder: (_) =>
           newPageErrorIndicator ?? const CommonNewPageErrorIndicator(),
       firstPageProgressIndicatorBuilder: (_) =>
-          firstPageProgressIndicator ?? const CommonFirstPageProgressIndicator(),
+          firstPageProgressIndicator ??
+          const CommonFirstPageProgressIndicator(),
       newPageProgressIndicatorBuilder: (_) =>
           newPageProgressIndicator ?? const CommonNewPageProgressIndicator(),
       noItemsFoundIndicatorBuilder: (_) =>
@@ -71,19 +73,24 @@ class CommonPagedSliverGrid<T> extends StatelessWidget {
           noMoreItemsIndicator ?? const CommonNoMoreItemsIndicator(),
     );
 
-    final pagedView = PagedSliverGrid(
-      pagingController: pagingController.pagingController,
-      builderDelegate: builderDelegate,
-      gridDelegate: gridDelegate,
-      addAutomaticKeepAlives: addAutomaticKeepAlives,
-      addRepaintBoundaries: addRepaintBoundaries,
-      addSemanticIndexes: addSemanticIndexes,
-      showNewPageProgressIndicatorAsGridChild: showNewPageProgressIndicatorAsGridChild,
-      showNewPageErrorIndicatorAsGridChild: showNewPageErrorIndicatorAsGridChild,
-      showNoMoreItemsIndicatorAsGridChild: showNoMoreItemsIndicatorAsGridChild,
-      shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+    return PagingListener<int, T>(
+      controller: pagingController.pagingController,
+      builder: (context, state, fetchNextPage) => PagedSliverGrid(
+        state: state,
+        fetchNextPage: fetchNextPage,
+        builderDelegate: builderDelegate,
+        gridDelegate: gridDelegate,
+        addAutomaticKeepAlives: addAutomaticKeepAlives,
+        addRepaintBoundaries: addRepaintBoundaries,
+        addSemanticIndexes: addSemanticIndexes,
+        showNewPageProgressIndicatorAsGridChild:
+            showNewPageProgressIndicatorAsGridChild,
+        showNewPageErrorIndicatorAsGridChild:
+            showNewPageErrorIndicatorAsGridChild,
+        showNoMoreItemsIndicatorAsGridChild:
+            showNoMoreItemsIndicatorAsGridChild,
+        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+      ),
     );
-
-    return pagedView;
   }
 }

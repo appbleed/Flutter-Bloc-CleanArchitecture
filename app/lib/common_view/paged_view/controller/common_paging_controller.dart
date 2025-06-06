@@ -8,82 +8,142 @@ class CommonPagingController<T> implements Disposable {
     this.invisibleItemsThreshold =
         PagingConstants.defaultInvisibleItemsThreshold,
     this.firstPageKey = PagingConstants.initialPage,
-  }) : pagingController = PagingController<int, T>(
-          firstPageKey: firstPageKey,
-          invisibleItemsThreshold: invisibleItemsThreshold,
-        );
+  });
 
-  final PagingController<int, T> pagingController;
+  late final PagingController<int, T> pagingController;
 
   final int? invisibleItemsThreshold;
   final int firstPageKey;
 
   // call when error
   set error(AppException? appException) {
-    pagingController.error = appException;
+    // In the new API, we need to handle errors through the state
+    final currentState = pagingController.value;
+    final newState = currentState.copyWith(
+      error: appException,
+      isLoading: false,
+    );
+    pagingController.value = newState;
   }
 
   // call when initState to listen to trigger load more
   void listen({
     required VoidCallback onLoadMore,
   }) {
-    pagingController.addPageRequestListener((pageKey) {
-      if (pageKey > PagingConstants.initialPage) {
-        onLoadMore();
-      }
-    });
+    // Initialize the PagingController with the actual onLoadMore callback
+    pagingController = PagingController<int, T>(
+      getNextPageKey: (state) => (state.keys?.last ?? firstPageKey - 1) + 1,
+      fetchPage: (pageKey) async {
+        if (pageKey > firstPageKey) {
+          onLoadMore();
+        }
+        // Return empty list as actual data will be provided through appendLoadMoreOutput
+        return [];
+      },
+    );
   }
 
   // call append data when load first page / more page success
   void appendLoadMoreOutput(LoadMoreOutput<T> loadMoreOutput) {
-    if (loadMoreOutput.isRefreshSuccess) {
-      pagingController.refresh();
-    }
+    // In the new API, we need to convert LoadMoreOutput to PagingState
+    final currentState = pagingController.value;
 
-    if (loadMoreOutput.isLastPage) {
-      pagingController.appendLastPage(loadMoreOutput.data);
-    } else {
-      pagingController.appendPage(
-        loadMoreOutput.data,
-        (pagingController.nextPageKey ?? (PagingConstants.initialPage - 1)) + 1,
-      );
-    }
+    final newKeys = loadMoreOutput.isRefreshSuccess
+        ? [firstPageKey]
+        : [...?currentState.keys, loadMoreOutput.page];
+
+    final newState = currentState.copyWith(
+      pages: loadMoreOutput.isRefreshSuccess
+          ? [loadMoreOutput.data]
+          : [...?currentState.pages, loadMoreOutput.data],
+      keys: newKeys,
+      hasNextPage: !loadMoreOutput.isLastPage,
+      isLoading: false,
+      error: null,
+    );
+
+    pagingController.value = newState;
   }
 
   void insertItemAt(int index, T item) {
-    pagingController.itemList?.insert(index, item);
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    pagingController.notifyListeners();
+    final currentState = pagingController.value;
+    final allItems = currentState.pages?.expand((page) => page).toList() ?? [];
+    if (index < allItems.length) {
+      allItems.insert(index, item);
+      // Rebuild pages from allItems - this is a simplified approach
+      final newState = currentState.copyWith(
+        pages: [allItems],
+        keys: [firstPageKey],
+      );
+      pagingController.value = newState;
+    }
   }
 
   void insertAllItemsAt(int index, Iterable<T> items) {
-    pagingController.itemList?.insertAll(index, items);
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    pagingController.notifyListeners();
+    final currentState = pagingController.value;
+    final allItems = currentState.pages?.expand((page) => page).toList() ?? [];
+    if (index <= allItems.length) {
+      allItems.insertAll(index, items);
+      // Rebuild pages from allItems - this is a simplified approach
+      final newState = currentState.copyWith(
+        pages: [allItems],
+        keys: [firstPageKey],
+      );
+      pagingController.value = newState;
+    }
   }
 
   void updateItemAt(int index, T newItem) {
-    pagingController.itemList?[index] = newItem;
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    pagingController.notifyListeners();
+    final currentState = pagingController.value;
+    final allItems = currentState.pages?.expand((page) => page).toList() ?? [];
+    if (index < allItems.length) {
+      allItems[index] = newItem;
+      // Rebuild pages from allItems - this is a simplified approach
+      final newState = currentState.copyWith(
+        pages: [allItems],
+        keys: [firstPageKey],
+      );
+      pagingController.value = newState;
+    }
   }
 
   void removeItemAt(int index) {
-    pagingController.itemList?.removeAt(index);
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    pagingController.notifyListeners();
+    final currentState = pagingController.value;
+    final allItems = currentState.pages?.expand((page) => page).toList() ?? [];
+    if (index < allItems.length) {
+      allItems.removeAt(index);
+      // Rebuild pages from allItems - this is a simplified approach
+      final newState = currentState.copyWith(
+        pages: [allItems],
+        keys: [firstPageKey],
+      );
+      pagingController.value = newState;
+    }
   }
 
   void removeRange(int start, int end) {
-    pagingController.itemList?.removeRange(start, end);
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    pagingController.notifyListeners();
+    final currentState = pagingController.value;
+    final allItems = currentState.pages?.expand((page) => page).toList() ?? [];
+    if (start < allItems.length && end <= allItems.length) {
+      allItems.removeRange(start, end);
+      // Rebuild pages from allItems - this is a simplified approach
+      final newState = currentState.copyWith(
+        pages: [allItems],
+        keys: [firstPageKey],
+      );
+      pagingController.value = newState;
+    }
   }
 
   void clear(int start, int end) {
-    pagingController.itemList?.clear();
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    pagingController.notifyListeners();
+    final newState = pagingController.value.copyWith(
+      pages: [],
+      keys: [],
+      hasNextPage: true,
+      isLoading: false,
+      error: null,
+    );
+    pagingController.value = newState;
   }
 
   @override

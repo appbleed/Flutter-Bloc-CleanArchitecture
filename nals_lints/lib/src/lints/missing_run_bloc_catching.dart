@@ -5,7 +5,8 @@ class MissingRunBlocCatching extends DartLintRule {
 
   static const _code = LintCode(
     name: 'missing_run_bloc_catching',
-    problemMessage: 'Use cases must be executed inside runBlocCatching or runCatching function',
+    problemMessage:
+        'Use cases must be executed inside runBlocCatching or runCatching function',
   );
 
   @override
@@ -34,17 +35,21 @@ class MissingRunBlocCatching extends DartLintRule {
                   final methodInvocations = astNode.pearMethodDeclarations
                       .map((e) => e.childMethodInvocations)
                       .firstWhereOrNull((element) {
-                    final runBlocCatchingMethodInvocation = element.firstWhereOrNull(
-                        (methodInvocation) =>
-                            methodInvocation.methodName.name == 'runBlocCatching' ||
+                    final runBlocCatchingMethodInvocation =
+                        element.firstWhereOrNull((methodInvocation) =>
+                            methodInvocation.methodName.name ==
+                                'runBlocCatching' ||
                             methodInvocation.methodName.name == 'runCatching');
 
                     if (runBlocCatchingMethodInvocation == null) {
                       return false;
                     }
 
-                    return runBlocCatchingMethodInvocation.childMethodInvocations.firstWhereOrNull(
-                            (element) => element.methodName.name == astNode.name.toString()) !=
+                    return runBlocCatchingMethodInvocation
+                            .childMethodInvocations
+                            .firstWhereOrNull((element) =>
+                                element.methodName.name ==
+                                astNode.name.toString()) !=
                         null;
                   });
 
@@ -56,7 +61,7 @@ class MissingRunBlocCatching extends DartLintRule {
                 return false;
               }) ==
               null) {
-        reporter.reportErrorForNode(code, node);
+        reporter.atNode(node, _code);
       }
     });
   }
@@ -100,8 +105,8 @@ class WrapWithRunBlocCatching extends DartFix {
           prefix,
         );
         builder.addSimpleInsertion(node.end + 1, postfix);
-        builder.formatWithPageWidth(
-            SourceRange(node.offset - prefix.length, node.length + prefix.length + postfix.length));
+        builder.formatWithPageWidth(SourceRange(node.offset - prefix.length,
+            node.length + prefix.length + postfix.length));
       });
     });
   }

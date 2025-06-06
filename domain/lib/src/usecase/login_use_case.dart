@@ -30,7 +30,7 @@ class LoginUseCase extends BaseFutureUseCase<LoginInput, LoginOutput> {
 }
 
 @freezed
-class LoginInput extends BaseInput with _$LoginInput {
+abstract class LoginInput extends BaseInput with _$LoginInput {
   const LoginInput._();
 
   const factory LoginInput({
@@ -40,7 +40,7 @@ class LoginInput extends BaseInput with _$LoginInput {
 }
 
 @freezed
-class LoginOutput extends BaseOutput with _$LoginOutput {
+abstract class LoginOutput extends BaseOutput with _$LoginOutput {
   const LoginOutput._();
 
   const factory LoginOutput({

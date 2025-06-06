@@ -29,7 +29,8 @@ class ForgotPasswordUseCase
 }
 
 @freezed
-class ForgotPasswordInput extends BaseInput with _$ForgotPasswordInput {
+abstract class ForgotPasswordInput extends BaseInput
+    with _$ForgotPasswordInput {
   const ForgotPasswordInput._();
 
   const factory ForgotPasswordInput({
@@ -38,7 +39,8 @@ class ForgotPasswordInput extends BaseInput with _$ForgotPasswordInput {
 }
 
 @freezed
-class ForgotPasswordOutput extends BaseOutput with _$ForgotPasswordOutput {
+abstract class ForgotPasswordOutput extends BaseOutput
+    with _$ForgotPasswordOutput {
   const ForgotPasswordOutput._();
 
   const factory ForgotPasswordOutput() = _ForgotPasswordOutput;

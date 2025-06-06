@@ -21,7 +21,11 @@ class LinesLongerThan100Chars extends DartLintRule {
           !codeLine.isImportStatement &&
           !codeLine.isExportStatement &&
           !codeLine.isString) {
-        reporter.reportErrorForOffset(_code, codeLine.lineOffset, codeLine.lineLength);
+        reporter.atOffset(
+          offset: codeLine.lineOffset,
+          length: codeLine.lineLength,
+          errorCode: _code,
+        );
       }
     });
   }

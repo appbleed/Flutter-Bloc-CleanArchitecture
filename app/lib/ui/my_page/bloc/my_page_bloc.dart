@@ -22,10 +22,12 @@ class MyPageBloc extends BaseBloc<MyPageEvent, MyPageState> {
     LogoutButtonPressed event,
     Emitter<MyPageState> emit,
   ) async {
-    return runBlocCatching(
-      action: () async {
-        await _logoutUseCase.execute(const LogoutInput());
-      },
+    return runBlocCatchingV2(
+      RunBlocCatchingParams(
+        action: () async {
+          await _logoutUseCase.execute(const LogoutInput());
+        },
+      ),
     );
   }
 }

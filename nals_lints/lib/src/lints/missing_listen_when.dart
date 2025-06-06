@@ -5,7 +5,8 @@ class MissingListenWhen extends DartLintRule {
 
   static const _code = LintCode(
     name: 'missing_listen_when',
-    problemMessage: '\'BlocListener\' objects must declare \'listenWhen\' parameter.',
+    problemMessage:
+        '\'BlocListener\' objects must declare \'listenWhen\' parameter.',
   );
 
   @override
@@ -15,12 +16,13 @@ class MissingListenWhen extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addInstanceCreationExpression((node) {
-      if (node.staticType?.toString().trim().startsWith('BlocListener') == true &&
+      if (node.staticType?.toString().trim().startsWith('BlocListener') ==
+              true &&
           node.argumentList.arguments
                   .whereType<NamedExpression>()
                   .any((element) => element.name.label.name == 'listenWhen') ==
               false) {
-        reporter.reportErrorForNode(code, node);
+        reporter.atNode(node, _code);
       }
     });
   }
@@ -42,7 +44,8 @@ class AddListenWhen extends DartFix {
   ) {
     context.registry.addInstanceCreationExpression((node) {
       if (!node.sourceRange.intersects(analysisError.sourceRange) ||
-          node.staticType?.toString().trim().startsWith('BlocListener') != true) {
+          node.staticType?.toString().trim().startsWith('BlocListener') !=
+              true) {
         return;
       }
 

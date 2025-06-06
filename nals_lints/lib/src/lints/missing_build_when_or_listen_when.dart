@@ -16,16 +16,15 @@ class MissingBuildWhenOrListenWhen extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addInstanceCreationExpression((node) {
-      if (node.staticType?.toString().trim().startsWith('BlocConsumer') == true &&
-          (node.argumentList.arguments
-                      .whereType<NamedExpression>()
-                      .any((element) => element.name.label.name == 'buildWhen') ==
+      if (node.staticType?.toString().trim().startsWith('BlocConsumer') ==
+              true &&
+          (node.argumentList.arguments.whereType<NamedExpression>().any(
+                      (element) => element.name.label.name == 'buildWhen') ==
                   false ||
-              node.argumentList.arguments
-                      .whereType<NamedExpression>()
-                      .any((element) => element.name.label.name == 'listenWhen') ==
+              node.argumentList.arguments.whereType<NamedExpression>().any(
+                      (element) => element.name.label.name == 'listenWhen') ==
                   false)) {
-        reporter.reportErrorForNode(code, node);
+        reporter.atNode(node, _code);
       }
     });
   }
@@ -47,7 +46,8 @@ class AddBuildWhenAndListenWhen extends DartFix {
   ) {
     context.registry.addInstanceCreationExpression((node) {
       if (!node.sourceRange.intersects(analysisError.sourceRange) ||
-          node.staticType?.toString().trim().startsWith('BlocConsumer') != true) {
+          node.staticType?.toString().trim().startsWith('BlocConsumer') !=
+              true) {
         return;
       }
 

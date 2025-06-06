@@ -5,7 +5,8 @@ class AvoidUnnecessaryAsyncFunction extends DartLintRule {
 
   static const _code = LintCode(
     name: 'avoid_unnecessary_async_function',
-    problemMessage: 'This async function is unnecessary. Please remove \'async\' keyword',
+    problemMessage:
+        'This async function is unnecessary. Please remove \'async\' keyword',
   );
 
   @override
@@ -20,11 +21,12 @@ class AvoidUnnecessaryAsyncFunction extends DartLintRule {
           node.body is BlockFunctionBody &&
           node.body.childAwaitExpressions.isEmpty &&
           !node.childReturnStatements.any((element) =>
-              element.expression?.staticType.toString().startsWith('Future') == true)) {
+              element.expression?.staticType.toString().startsWith('Future') ==
+              true)) {
         if (node.body.keyword != null) {
-          reporter.reportErrorForToken(code, node.body.keyword!);
+          reporter.atToken(node.body.keyword!, _code);
         } else {
-          reporter.reportErrorForNode(code, node);
+          reporter.atNode(node, _code);
         }
       }
     });
@@ -58,11 +60,12 @@ class RemoveUnnecessaryAsyncKeyWord extends DartFix {
 
       changeBuilder.addDartFileEdit((builder) {
         builder.addDeletion(analysisError.sourceRange);
-        if (node.returnType != null && node.returnType.toString().startsWith('Future')) {
+        if (node.returnType != null &&
+            node.returnType.toString().startsWith('Future')) {
           builder.addSimpleReplacement(
               node.returnType!.sourceRange,
-              node.returnType.toString().replaceFirstMapped(RegExp(r'(Future<|FutureOr<)(.+)>'),
-                  (match) {
+              node.returnType.toString().replaceFirstMapped(
+                  RegExp(r'(Future<|FutureOr<)(.+)>'), (match) {
                 return match.group(2) ?? '';
               }));
         }

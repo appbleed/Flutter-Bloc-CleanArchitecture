@@ -70,7 +70,7 @@ class SettingsJsonWriter extends LaunchJsonWriter {
     final map = <String, String>{};
     dartDefinesByEnv.forEach((key, value) {
       final Flavor matchingFlavor =
-      flavorsList.firstWhere((element) => element.flavorEnum == key);
+          flavorsList.firstWhere((element) => element.flavorEnum == key);
       map.addAll(value
           .map((key, value) => MapEntry('${matchingFlavor.prefix}_$key', value))
         ..remove('${matchingFlavor.prefix}_$flavorKey'));
@@ -126,7 +126,7 @@ class LaunchJsonWriter {
 
     config.update(
       'toolArgs',
-          (dynamic value) =>
+      (dynamic value) =>
           getNonDartDefineArguments(value).followedBy(dartDefineArgs).toList(),
       ifAbsent: () => dartDefineArgs.toList(),
     );
@@ -139,6 +139,7 @@ class LaunchJsonWriter {
       final encoder = JsonEncoder.withIndent(spaces);
       return encoder.convert(json);
     } catch (e) {
+      print('Error prettifying JSON: $e');
       return '';
     }
   }

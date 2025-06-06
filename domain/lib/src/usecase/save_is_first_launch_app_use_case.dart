@@ -23,7 +23,7 @@ class SaveIsFirstLaunchAppUseCase extends BaseFutureUseCase<
 }
 
 @freezed
-class SaveIsFirstLaunchAppInput extends BaseInput
+abstract class SaveIsFirstLaunchAppInput extends BaseInput
     with _$SaveIsFirstLaunchAppInput {
   const SaveIsFirstLaunchAppInput._();
 
@@ -33,7 +33,7 @@ class SaveIsFirstLaunchAppInput extends BaseInput
 }
 
 @freezed
-class SaveIsFirstLaunchAppOutput extends BaseOutput
+abstract class SaveIsFirstLaunchAppOutput extends BaseOutput
     with _$SaveIsFirstLaunchAppOutput {
   const SaveIsFirstLaunchAppOutput._();
 

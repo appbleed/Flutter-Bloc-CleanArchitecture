@@ -6,13 +6,73 @@ import 'package:shared/shared.dart';
 
 import '../../app.dart';
 
+class RunBlocCatchingParams {
+  RunBlocCatchingParams({
+    required this.action,
+    this.doOnRetry,
+    this.doOnError,
+    this.doOnSubscribe,
+    this.doOnSuccessOrError,
+    this.doOnEventCompleted,
+    this.handleLoading = true,
+    this.handleError = true,
+    this.handleRetry = true,
+    this.forceHandleError,
+    this.overrideErrorMessage,
+    this.maxRetries,
+  });
+
+  final Future<void> Function() action;
+  final Future<void> Function()? doOnRetry;
+  final Future<void> Function(AppException)? doOnError;
+  final Future<void> Function()? doOnSubscribe;
+  final Future<void> Function()? doOnSuccessOrError;
+  final Future<void> Function()? doOnEventCompleted;
+  final bool handleLoading;
+  final bool handleError;
+  final bool handleRetry;
+  final bool Function(AppException)? forceHandleError;
+  final String? overrideErrorMessage;
+  final int? maxRetries;
+
+  RunBlocCatchingParams copyWith({
+    Future<void> Function()? action,
+    Future<void> Function()? doOnRetry,
+    Future<void> Function(AppException)? doOnError,
+    Future<void> Function()? doOnSubscribe,
+    Future<void> Function()? doOnSuccessOrError,
+    Future<void> Function()? doOnEventCompleted,
+    bool? handleLoading,
+    bool? handleError,
+    bool? handleRetry,
+    bool Function(AppException)? forceHandleError,
+    String? overrideErrorMessage,
+    int? maxRetries,
+  }) {
+    return RunBlocCatchingParams(
+      action: action ?? this.action,
+      doOnRetry: doOnRetry ?? this.doOnRetry,
+      doOnError: doOnError ?? this.doOnError,
+      doOnSubscribe: doOnSubscribe ?? this.doOnSubscribe,
+      doOnSuccessOrError: doOnSuccessOrError ?? this.doOnSuccessOrError,
+      doOnEventCompleted: doOnEventCompleted ?? this.doOnEventCompleted,
+      handleLoading: handleLoading ?? this.handleLoading,
+      handleError: handleError ?? this.handleError,
+      handleRetry: handleRetry ?? this.handleRetry,
+      forceHandleError: forceHandleError ?? this.forceHandleError,
+      overrideErrorMessage: overrideErrorMessage ?? this.overrideErrorMessage,
+      maxRetries: maxRetries ?? this.maxRetries,
+    );
+  }
+}
+
 abstract class BaseBloc<E extends BaseBlocEvent, S extends BaseBlocState>
     extends BaseBlocDelegate<E, S> with EventTransformerMixin, LogMixin {
   BaseBloc(super.initialState);
 }
 
-abstract class BaseBlocDelegate<E extends BaseBlocEvent, S extends BaseBlocState>
-    extends Bloc<E, S> {
+abstract class BaseBlocDelegate<E extends BaseBlocEvent,
+    S extends BaseBlocState> extends Bloc<E, S> {
   BaseBlocDelegate(super.initialState);
 
   late final AppNavigator navigator;
@@ -26,7 +86,8 @@ abstract class BaseBlocDelegate<E extends BaseBlocEvent, S extends BaseBlocState
     _commonBloc = commonBloc;
   }
 
-  CommonBloc get commonBloc => this is CommonBloc ? this as CommonBloc : _commonBloc;
+  CommonBloc get commonBloc =>
+      this is CommonBloc ? this as CommonBloc : _commonBloc;
 
   @override
   void add(E event) {
@@ -53,72 +114,52 @@ abstract class BaseBlocDelegate<E extends BaseBlocEvent, S extends BaseBlocState
     commonBloc.add(const LoadingVisibilityEmitted(isLoading: false));
   }
 
-  Future<void> runBlocCatching({
-    required Future<void> Function() action,
-    Future<void> Function()? doOnRetry,
-    Future<void> Function(AppException)? doOnError,
-    Future<void> Function()? doOnSubscribe,
-    Future<void> Function()? doOnSuccessOrError,
-    Future<void> Function()? doOnEventCompleted,
-    bool handleLoading = true,
-    bool handleError = true,
-    bool handleRetry = true,
-    bool Function(AppException)? forceHandleError,
-    String? overrideErrorMessage,
-    int? maxRetries,
-  }) async {
-    assert(maxRetries == null || maxRetries > 0, 'maxRetries must be positive');
+  Future<void> runBlocCatchingV2(RunBlocCatchingParams params) async {
+    assert(params.maxRetries == null || params.maxRetries! > 0,
+        'maxRetries must be positive');
     Completer<void>? recursion;
     try {
-      await doOnSubscribe?.call();
-      if (handleLoading) {
+      await params.doOnSubscribe?.call();
+      if (params.handleLoading) {
         showLoading();
       }
 
-      await action.call();
+      await params.action.call();
 
-      if (handleLoading) {
+      if (params.handleLoading) {
         hideLoading();
       }
-      await doOnSuccessOrError?.call();
+      await params.doOnSuccessOrError?.call();
     } on AppException catch (e) {
-      if (handleLoading) {
+      if (params.handleLoading) {
         hideLoading();
       }
-      await doOnSuccessOrError?.call();
-      await doOnError?.call(e);
+      await params.doOnSuccessOrError?.call();
+      await params.doOnError?.call(e);
 
-      if (handleError || (forceHandleError?.call(e) ?? _forceHandleError(e))) {
+      if (params.handleError ||
+          (params.forceHandleError?.call(e) ?? _forceHandleError(e))) {
         await addException(AppExceptionWrapper(
           appException: e,
-          doOnRetry: doOnRetry ??
-              (handleRetry && maxRetries != 1
+          doOnRetry: params.doOnRetry ??
+              (params.handleRetry && params.maxRetries != 1
                   ? () async {
                       recursion = Completer();
-                      await runBlocCatching(
-                        action: action,
-                        doOnEventCompleted: doOnEventCompleted,
-                        doOnSubscribe: doOnSubscribe,
-                        doOnSuccessOrError: doOnSuccessOrError,
-                        doOnError: doOnError,
-                        doOnRetry: doOnRetry,
-                        forceHandleError: forceHandleError,
-                        handleError: handleError,
-                        handleLoading: handleLoading,
-                        handleRetry: handleRetry,
-                        overrideErrorMessage: overrideErrorMessage,
-                        maxRetries: maxRetries?.minus(1),
+                      await runBlocCatchingV2(
+                        params.copyWith(
+                          maxRetries: params.maxRetries?.minus(1),
+                        ),
                       );
                       recursion?.complete();
                     }
                   : null),
           exceptionCompleter: Completer<void>(),
-          overrideMessage: overrideErrorMessage,
+          overrideMessage: params.overrideErrorMessage,
         ));
       }
     } finally {
       await recursion?.future;
-      await doOnEventCompleted?.call();
+      await params.doOnEventCompleted?.call();
     }
   }
 

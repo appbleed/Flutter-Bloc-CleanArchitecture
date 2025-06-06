@@ -18,32 +18,38 @@ pubspec_nals_lints_path="$root_project_path/nals_lints/pubspec.yaml"
 pubspec_versions_path="$root_project_path/pub_versions.yaml"
 
 pubspec_app=$(< $pubspec_app_path)
-regex_pub_and_version="^\s+\w+:\s*\d+\..*"
-pub_and_versions=$( grep -E $regex_pub_and_version "$pubspec_versions_path" )
-regex_pub_name="[A-Za-z_]+:\s\d" #output sample: analyzer: 2
-pub_names=$( grep -oE $regex_pub_name "$line" )
+regex_pub_and_version="^\s*\w+:\s*^?\d+\..*"
 
 n=1
 while read line; do
-    if [[ $line =~ ^[A-Za-z_]+:[[:space:]]*[0-9]+.*$ ]]; then
+    if [[ $line =~ $regex_pub_and_version ]]; then
         version_maps["${line%:*}"]="  $line" # and two space and remove version, Ex output: bloc_test
     fi
 done < $pubspec_versions_path
 
 replaceVersions() {
     echo "=====$1====="
+    local file_path=$1
+    local temp_file=$(mktemp)
+
     n=1
     while read line; do
-        if [[ $line =~ ^[A-Za-z_]+:[[:space:]][0-9].*$ ]]; then
-            value=${version_maps["${line%:*}"]}
+        if [[ $line =~ $regex_pub_and_version ]]; then
+            local key="${line%:*}"
+            local value=${version_maps[$key]}
             if [[ -n $value && "  $line" != $value ]]; then
                 echo "replaced $line by $value"
-                sed -i '' "${n}s/.*/$value/" $1
+                echo "$value" >> "$temp_file"
+            else
+                echo "$line" >> "$temp_file"
             fi
+        else
+            echo "$line" >> "$temp_file"
         fi
-
         n=$((n+1))
-    done < $1
+    done < "$file_path"
+
+    mv "$temp_file" "$file_path"
 }
 
 replaceVersions $pubspec_app_path

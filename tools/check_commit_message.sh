@@ -2,7 +2,7 @@
 echo "Checking commit message..."
 commit_message=$1
 
-if [[ ! $commit_message =~ ^[[]NFT-[0-9]+][[:space:]][[:alnum:][:punct:][:space:]]+$ ]]; then
+if [[ ! $commit_message =~ ^\[NFT-[0-9]+\][[:space:]][A-Za-z0-9\s.,\'\":-]+$ ]]; then
     echo "Commit message \"$commit_message\" is invalid. See example: \"[NFT-2] some text\""
     exit 1
 fi

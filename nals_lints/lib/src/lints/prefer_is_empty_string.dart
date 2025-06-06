@@ -17,8 +17,9 @@ class PreferIsEmptyString extends DartLintRule {
   ) {
     context.registry.addBinaryExpression((node) {
       if (node.operator.type == TokenType.EQ_EQ &&
-          (node.leftOperand.toString() == '\'\'' || node.rightOperand.toString() == '\'\'')) {
-        reporter.reportErrorForNode(code, node);
+          (node.leftOperand.toString() == '\'\'' ||
+              node.rightOperand.toString() == '\'\'')) {
+        reporter.atNode(node, _code);
       }
     });
   }
@@ -41,7 +42,8 @@ class ReplaceWithIsEmpty extends DartFix {
     context.registry.addBinaryExpression((node) {
       if (!node.sourceRange.intersects(analysisError.sourceRange) ||
           node.operator.type != TokenType.EQ_EQ ||
-          (node.leftOperand.toString() != '\'\'' && node.rightOperand.toString() != '\'\'')) {
+          (node.leftOperand.toString() != '\'\'' &&
+              node.rightOperand.toString() != '\'\'')) {
         return;
       }
 
@@ -50,7 +52,9 @@ class ReplaceWithIsEmpty extends DartFix {
         priority: 71,
       );
 
-      final variable = node.leftOperand.toString() == '\'\'' ? node.rightOperand : node.leftOperand;
+      final variable = node.leftOperand.toString() == '\'\''
+          ? node.rightOperand
+          : node.leftOperand;
 
       changeBuilder.addDartFileEdit((builder) {
         builder.addSimpleReplacement(

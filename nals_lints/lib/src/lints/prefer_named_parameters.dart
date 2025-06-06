@@ -15,45 +15,51 @@ class PreferNamedParameters extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    resolver.getResolvedUnitResult().then((value) =>
-        value.unit.visitChildren(RecursiveConstructorAndFunctionAndMethodDeclarationVisitor(
+    resolver.getResolvedUnitResult().then((value) => value.unit.visitChildren(
+            RecursiveConstructorAndFunctionAndMethodDeclarationVisitor(
           onVisitFunctionDeclaration: (FunctionDeclaration node) {
-            final parameters =
-                node.functionExpression.parameters?.parameters ?? <FormalParameter>[];
+            final parameters = node.functionExpression.parameters?.parameters ??
+                <FormalParameter>[];
             if (parameters.length > 1 &&
-                parameters.where((element) => element.isNamed).length != parameters.length) {
-              reporter.reportErrorForNode(code, node.functionExpression.parameters!);
+                parameters.where((element) => element.isNamed).length !=
+                    parameters.length) {
+              reporter.atNode(node.functionExpression.parameters!, _code);
             }
           },
           onVisitMethodDeclaration: (MethodDeclaration node) {
-            final parameters = node.parameters?.parameters ?? <FormalParameter>[];
+            final parameters =
+                node.parameters?.parameters ?? <FormalParameter>[];
             if (parameters.length > 1 &&
                 !_isMethodDeclarationException(node) &&
                 !node.isOverrideMethod &&
-                parameters.where((element) => element.isNamed).length != parameters.length) {
-              reporter.reportErrorForNode(code, node.parameters!);
+                parameters.where((element) => element.isNamed).length !=
+                    parameters.length) {
+              reporter.atNode(node.parameters!, _code);
             }
           },
           onVisitConstructorDeclaration: (ConstructorDeclaration node) {
             final parameters = node.parameters.parameters;
             if (parameters.length > 1 &&
                 !_isConstuctorDeclarationException(node) &&
-                parameters.where((element) => element.isNamed).length != parameters.length) {
-              reporter.reportErrorForNode(code, node.parameters);
+                parameters.where((element) => element.isNamed).length !=
+                    parameters.length) {
+              reporter.atNode(node.parameters, _code);
             }
           },
         )));
   }
 
   bool _isMethodDeclarationException(MethodDeclaration node) {
-    return node.parentClassDeclaration?.name.toString().endsWith('Bloc') == true &&
+    return node.parentClassDeclaration?.name.toString().endsWith('Bloc') ==
+            true &&
         node.name.toString().startsWith('_on');
   }
 
   bool _isConstuctorDeclarationException(ConstructorDeclaration node) {
     return node.name.toString() == 'fromJson' ||
-        node.parentClassDeclaration?.toString().trim().startsWith(
-                RegExp(r'@injectable|@lazySingleton|@singleton', caseSensitive: false)) ==
+        node.parentClassDeclaration?.toString().trim().startsWith(RegExp(
+                r'@injectable|@lazySingleton|@singleton',
+                caseSensitive: false)) ==
             true;
   }
 
@@ -81,16 +87,20 @@ class ConvertToNamedParameters extends DartFix {
             return;
           }
 
-          _fix(parameterList: node.functionExpression.parameters!, reporter: reporter);
+          _fix(
+              parameterList: node.functionExpression.parameters!,
+              reporter: reporter);
         }, onVisitMethodDeclaration: (MethodDeclaration node) {
           if (node.parameters == null ||
-              !node.parameters!.sourceRange.intersects(analysisError.sourceRange)) {
+              !node.parameters!.sourceRange
+                  .intersects(analysisError.sourceRange)) {
             return;
           }
 
           _fix(parameterList: node.parameters!, reporter: reporter);
         }, onVisitConstructorDeclaration: (node) {
-          if (!node.parameters.sourceRange.intersects(analysisError.sourceRange)) {
+          if (!node.parameters.sourceRange
+              .intersects(analysisError.sourceRange)) {
             return;
           }
 
@@ -111,14 +121,16 @@ class ConvertToNamedParameters extends DartFix {
     );
 
     final parameters = parameterList.parameters
-        .map((e) =>
-            e.isNullableType || e.hasDefaultValue || e.toString().trim().startsWith('required')
-                ? e.toString()
-                : 'required $e')
+        .map((e) => e.isNullableType ||
+                e.hasDefaultValue ||
+                e.toString().trim().startsWith('required')
+            ? e.toString()
+            : 'required $e')
         .join(', ');
 
     changeBuilder.addDartFileEdit((builder) {
-      builder.addSimpleReplacement(parameterList.sourceRange, '({$parameters,})');
+      builder.addSimpleReplacement(
+          parameterList.sourceRange, '({$parameters,})');
       builder.formatWithPageWidth(parameterList.sourceRange);
     });
   }

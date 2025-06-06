@@ -23,7 +23,8 @@ class SaveLanguageCodeUseCase
 }
 
 @freezed
-class SaveLanguageCodeInput extends BaseInput with _$SaveLanguageCodeInput {
+abstract class SaveLanguageCodeInput extends BaseInput
+    with _$SaveLanguageCodeInput {
   const SaveLanguageCodeInput._();
 
   const factory SaveLanguageCodeInput({
@@ -32,7 +33,8 @@ class SaveLanguageCodeInput extends BaseInput with _$SaveLanguageCodeInput {
 }
 
 @freezed
-class SaveLanguageCodeOutput extends BaseOutput with _$SaveLanguageCodeOutput {
+abstract class SaveLanguageCodeOutput extends BaseOutput
+    with _$SaveLanguageCodeOutput {
   const SaveLanguageCodeOutput._();
 
   const factory SaveLanguageCodeOutput() = _SaveLanguageCodeOutput;

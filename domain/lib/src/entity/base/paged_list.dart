@@ -5,7 +5,7 @@ import '../../../domain.dart';
 part 'paged_list.freezed.dart';
 
 @freezed
-class PagedList<T> with _$PagedList<T> {
+abstract class PagedList<T> with _$PagedList<T> {
   const PagedList._();
 
   const factory PagedList({
@@ -20,6 +20,7 @@ class PagedList<T> with _$PagedList<T> {
   bool get isLastPage => data.isEmpty || next == null;
 
   LoadMoreOutput<T> toLoadMoreOutput() {
-    return LoadMoreOutput(data: data, otherData: otherData, isLastPage: isLastPage);
+    return LoadMoreOutput(
+        data: data, otherData: otherData, isLastPage: isLastPage);
   }
 }

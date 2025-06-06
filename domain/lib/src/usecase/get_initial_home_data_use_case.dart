@@ -27,14 +27,15 @@ class GetInitialHomeDataUseCase extends BaseFutureUseCase<
 }
 
 @freezed
-class GetInitialHomeDataInput extends BaseInput with _$GetInitialHomeDataInput {
+abstract class GetInitialHomeDataInput extends BaseInput
+    with _$GetInitialHomeDataInput {
   const GetInitialHomeDataInput._();
 
   const factory GetInitialHomeDataInput() = _GetInitialHomeDataInput;
 }
 
 @freezed
-class GetInitialHomeDataOutput extends BaseOutput
+abstract class GetInitialHomeDataOutput extends BaseOutput
     with _$GetInitialHomeDataOutput {
   const GetInitialHomeDataOutput._();
 

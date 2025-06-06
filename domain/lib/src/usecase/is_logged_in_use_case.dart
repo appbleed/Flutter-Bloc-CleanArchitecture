@@ -20,14 +20,14 @@ class IsLoggedInUseCase
 }
 
 @freezed
-class IsLoggedInInput extends BaseInput with _$IsLoggedInInput {
+abstract class IsLoggedInInput extends BaseInput with _$IsLoggedInInput {
   const IsLoggedInInput._();
 
   const factory IsLoggedInInput() = _IsLoggedInInput;
 }
 
 @freezed
-class IsLoggedInOutput extends BaseOutput with _$IsLoggedInOutput {
+abstract class IsLoggedInOutput extends BaseOutput with _$IsLoggedInOutput {
   const IsLoggedInOutput._();
 
   const factory IsLoggedInOutput({

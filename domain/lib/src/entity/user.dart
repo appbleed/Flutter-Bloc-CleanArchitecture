@@ -6,7 +6,7 @@ import '../../domain.dart';
 part 'user.freezed.dart';
 
 @freezed
-class User with _$User {
+abstract class User with _$User {
   const factory User({
     @Default(User.defaultId) int id,
     @Default(User.defaultEmail) String email,
@@ -16,6 +16,8 @@ class User with _$User {
     @Default(User.defaultPhotos) List<ImageUrl> photos,
     @Default(User.defaultGender) Gender gender,
   }) = _User;
+
+  const User._();
 
   static const defaultId = 0;
   static const defaultEmail = '';

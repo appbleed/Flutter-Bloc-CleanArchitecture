@@ -15,72 +15,73 @@ class AvoidHardCodedColors extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    resolver
-        .getResolvedUnitResult()
-        .then((value) => value.unit.visitChildren(VariableAndArgumentVisitor(
-              onVisitInstanceCreationExpression: (InstanceCreationExpression node) {
-                node.argumentList.arguments.forEach((element) {
-                  if (element is NamedExpression) {
-                    if (_isHardCoded(element.expression.toString())) {
-                      reporter.reportErrorForNode(code, element.expression);
-                    }
-                  } else if (_isHardCoded(element.toString())) {
-                    reporter.reportErrorForNode(code, element);
-                  }
-                });
-              },
-              onVisitVariableDeclaration: (VariableDeclaration node) {
-                if (node.initializer != null && _isHardCoded(node.initializer.toString())) {
-                  reporter.reportErrorForNode(code, node.initializer!);
+    resolver.getResolvedUnitResult().then((value) =>
+        value.unit.visitChildren(VariableAndArgumentVisitor(
+          onVisitInstanceCreationExpression: (InstanceCreationExpression node) {
+            node.argumentList.arguments.forEach((element) {
+              if (element is NamedExpression) {
+                if (_isHardCoded(element.expression.toString())) {
+                  reporter.atNode(element.expression, _code);
                 }
-              },
-              onVisitAssignmentExpression: (AssignmentExpression node) {
-                if (_isHardCoded(node.rightHandSide.toString())) {
-                  reporter.reportErrorForNode(code, node.rightHandSide);
+              } else if (_isHardCoded(element.toString())) {
+                reporter.atNode(element, _code);
+              }
+            });
+          },
+          onVisitVariableDeclaration: (VariableDeclaration node) {
+            if (node.initializer != null &&
+                _isHardCoded(node.initializer.toString())) {
+              reporter.atNode(node.initializer!, _code);
+            }
+          },
+          onVisitAssignmentExpression: (AssignmentExpression node) {
+            if (_isHardCoded(node.rightHandSide.toString())) {
+              reporter.atNode(node.rightHandSide, _code);
+            }
+          },
+          onVisitConstructorFieldInitializer:
+              (ConstructorFieldInitializer node) {
+            if (_isHardCoded(node.expression.toString())) {
+              reporter.atNode(node.expression, _code);
+            }
+          },
+          onVisitSuperConstructorInvocation: (SuperConstructorInvocation node) {
+            node.argumentList.arguments.forEach((element) {
+              if (element is NamedExpression) {
+                if (_isHardCoded(element.expression.toString())) {
+                  reporter.atNode(element.expression, _code);
                 }
-              },
-              onVisitConstructorFieldInitializer: (ConstructorFieldInitializer node) {
-                if (_isHardCoded(node.expression.toString())) {
-                  reporter.reportErrorForNode(code, node.expression);
+              } else if (_isHardCoded(element.toString())) {
+                reporter.atNode(element, _code);
+              }
+            });
+          },
+          onVisitConstructorDeclaration: (ConstructorDeclaration node) {
+            node.parameters.parameterElements.forEach((element) {
+              if (element?.defaultValueCode != null &&
+                  _isHardCoded(element!.defaultValueCode!)) {
+                if (element is DefaultFieldFormalParameterElementImpl) {
+                  reporter.atNode(element.constantInitializer!, _code);
+                } else if (element is DefaultParameterElementImpl) {
+                  reporter.atNode(element.constantInitializer!, _code);
+                } else {
+                  reporter.atNode(node, _code);
                 }
-              },
-              onVisitSuperConstructorInvocation: (SuperConstructorInvocation node) {
-                node.argumentList.arguments.forEach((element) {
-                  if (element is NamedExpression) {
-                    if (_isHardCoded(element.expression.toString())) {
-                      reporter.reportErrorForNode(code, element.expression);
-                    }
-                  } else if (_isHardCoded(element.toString())) {
-                    reporter.reportErrorForNode(code, element);
-                  }
-                });
-              },
-              onVisitConstructorDeclaration: (ConstructorDeclaration node) {
-                node.parameters.parameterElements.forEach((element) {
-                  if (element?.defaultValueCode != null &&
-                      _isHardCoded(element!.defaultValueCode!)) {
-                    if (element is DefaultFieldFormalParameterElementImpl) {
-                      reporter.reportErrorForNode(code, element.constantInitializer!);
-                    } else if (element is DefaultParameterElementImpl) {
-                      reporter.reportErrorForNode(code, element.constantInitializer!);
-                    } else {
-                      reporter.reportErrorForNode(code, node);
-                    }
-                  }
-                });
-              },
-              onVisitArgumentList: (node) {
-                node.arguments.forEach((element) {
-                  if (element is NamedExpression) {
-                    if (_isHardCoded(element.expression.toString())) {
-                      reporter.reportErrorForNode(code, element.expression);
-                    }
-                  } else if (_isHardCoded(element.toString())) {
-                    reporter.reportErrorForNode(code, element);
-                  }
-                });
-              },
-            )));
+              }
+            });
+          },
+          onVisitArgumentList: (node) {
+            node.arguments.forEach((element) {
+              if (element is NamedExpression) {
+                if (_isHardCoded(element.expression.toString())) {
+                  reporter.atNode(element.expression, _code);
+                }
+              } else if (_isHardCoded(element.toString())) {
+                reporter.atNode(element, _code);
+              }
+            });
+          },
+        )));
   }
 
   bool _isHardCoded(String color) {

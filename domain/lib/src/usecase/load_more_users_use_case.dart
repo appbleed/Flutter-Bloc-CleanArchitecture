@@ -24,7 +24,7 @@ class LoadMoreUsersUseCase
 }
 
 @freezed
-class LoadMoreUsersInput extends BaseInput with _$LoadMoreUsersInput {
+abstract class LoadMoreUsersInput extends BaseInput with _$LoadMoreUsersInput {
   const LoadMoreUsersInput._();
 
   const factory LoadMoreUsersInput({

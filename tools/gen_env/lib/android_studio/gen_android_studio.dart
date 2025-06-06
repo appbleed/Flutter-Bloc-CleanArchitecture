@@ -36,9 +36,12 @@ class AndroidStudioEnvGenerator {
         filePath: workspaceXmlPath,
         allDartDefinesByEnv: allDartDefinesByEnv,
       ).call();
+    } on XmlException catch (e) {
+      print(
+          'Error: Failed to parse $workspaceXmlPath. It is not a valid XML file.\n$e');
     } on FormatException catch (e) {
-      print('''Error: The content of $workspaceXmlPath is not a valid XML format
-        $e''');
+      print(
+          'Error: The content of $workspaceXmlPath has an invalid structure.\n$e');
     } on FileSystemException catch (e) {
       print('Error: $workspaceXmlPath does not exist!\n$e');
     }
@@ -57,25 +60,24 @@ class ConfigXmlWriter {
   void call() {
     final mandatoryFile = File(filePath);
     mandatoryFile
-        .writeAsStringSync(writeConfig(mandatoryFile.readAsStringSync()));
+        .writeAsStringSync(_writeConfig(mandatoryFile.readAsStringSync()));
   }
 
-  String writeConfig(String fileContent) {
+  String _writeConfig(String fileContent) {
     final XmlDocument document = XmlDocument.parse(fileContent);
-    validateConfFile(document);
-    final runConfRootElement = document
-        .findAllElements('component')
-        .firstWhereOrNull(
-            (element) => element.getAttribute('name') == 'RunManager');
+    _validateConfFile(document);
+    final runConfRootElement = _findRunManagerComponent(document);
+
     if (runConfRootElement == null) {
-      throw FormatException;
+      throw StateError(
+          'Could not find or create <component name="RunManager">. This should not happen.');
     }
 
     flutterCommands.forEach((String command) {
       flavorsList.forEach((element) {
-        addOrReplaceConf(
+        _addOrReplaceConf(
             runConfRootElement,
-            createRunConf(
+            _createRunConf(
                 config: command,
                 flavor: element.name,
                 dartDefines: allDartDefinesByEnv[element.flavorEnum]));
@@ -83,39 +85,36 @@ class ConfigXmlWriter {
     });
 
     makefileCommands.forEach((String command) {
-      addOrReplaceConf(runConfRootElement, createMakeConf(target: command));
+      _addOrReplaceConf(runConfRootElement, _createMakeConf(target: command));
     });
 
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
-  void validateConfFile(XmlDocument document) {
-    XmlElement? runConfRootElement = document
-        .findAllElements('component')
-        .firstWhereOrNull(
-            (element) => element.getAttribute('name') == 'RunManager');
-    if (runConfRootElement == null) {
+  XmlElement? _findRunManagerComponent(XmlDocument document) {
+    return document.findAllElements('component').firstWhereOrNull(
+        (element) => element.getAttribute('name') == 'RunManager');
+  }
+
+  void _validateConfFile(XmlDocument document) {
+    if (_findRunManagerComponent(document) == null) {
       final projectRootElements = document.findAllElements('project');
       if (projectRootElements.isEmpty) {
-        throw FormatException;
+        throw FormatException(
+            'Could not find <project> element in $workspaceXmlPath');
       }
       final XmlNode runManagerElement =
-          createElementFromSkeleton(runManagerSkeleton);
+          _createElementFromSkeleton(runManagerSkeleton);
       projectRootElements.first.children.add(runManagerElement);
-
-      runConfRootElement = document
-          .findAllElements('component')
-          .firstWhereOrNull(
-              (element) => element.getAttribute('name') == 'RunManager');
     }
   }
 
-  XmlNode createRunConf(
+  XmlNode _createRunConf(
       {required String config,
       required String flavor,
       Map<String, String>? dartDefines}) {
     final XmlNode newRunConfElement =
-        createElementFromSkeleton(runConfigSkeletonXml);
+        _createElementFromSkeleton(runConfigSkeletonXml);
     newRunConfElement.setAttribute('name', '$config $flavor');
     final buildFlavorElement = newRunConfElement.childElements
         .firstWhere((element) => element.getAttribute('name') == 'buildFlavor');
@@ -124,29 +123,35 @@ class ConfigXmlWriter {
         (element) => element.getAttribute('name') == 'additionalArgs');
     dartDefinesElement.setAttribute(
         'value',
-        getAdditionalArgs(
+        _getAdditionalArgs(
             command: config, flavor: flavor, dartDefines: dartDefines));
     return newRunConfElement;
   }
 
-  XmlNode createMakeConf({required String target}) {
+  XmlNode _createMakeConf({required String target}) {
     final XmlNode newMakeConfElement =
-        createElementFromSkeleton(makeConfigSkeletonXml);
+        _createElementFromSkeleton(makeConfigSkeletonXml);
     newMakeConfElement.setAttribute('name', 'make $target');
     final targetElement = newMakeConfElement.findAllElements('makefile').first;
     targetElement.setAttribute('target', target);
     return newMakeConfElement;
   }
 
-  XmlNode createElementFromSkeleton(String skeleton) {
-    final XmlNode? element = XmlDocument.parse(skeleton).firstChild?.copy();
-    if (element == null) {
-      throw FormatException;
+  XmlNode _createElementFromSkeleton(String skeleton) {
+    try {
+      final XmlNode? element = XmlDocument.parse(skeleton).firstChild?.copy();
+      if (element == null) {
+        throw FormatException(
+            'Failed to create element from skeleton because it parsed to null: $skeleton');
+      }
+      return element;
+    } on XmlException catch (e) {
+      throw FormatException(
+          'Failed to parse skeleton XML: $e\nSkeleton: $skeleton');
     }
-    return element;
   }
 
-  String getAdditionalArgs({
+  String _getAdditionalArgs({
     required String flavor,
     String? command,
     Map<String, String>? dartDefines,
@@ -160,7 +165,7 @@ class ConfigXmlWriter {
     return buffer.toString();
   }
 
-  void addOrReplaceConf(XmlElement rootElement, XmlNode newConf) {
+  void _addOrReplaceConf(XmlElement rootElement, XmlNode newConf) {
     final XmlNode? existingElement = rootElement.children.firstWhereOrNull(
         (element) =>
             element.getAttribute('name') == newConf.getAttribute('name'));

@@ -19,8 +19,13 @@ class IncorrectTodoComment extends DartLintRule {
     resolver.getLineContents((codeLine) {
       if (codeLine.isEndOfLineComment) {
         if (codeLine.content.contains(RegExp(r'//\s*TODO')) &&
-            !RegExp(r'^\/\/\s*TODO\(.+\):.*#\d+.*$').hasMatch(codeLine.content.trim())) {
-          reporter.reportErrorForOffset(code, codeLine.lineOffset, codeLine.lineLength);
+            !RegExp(r'^\/\/\s*TODO\(.+\):.*#\d+.*$')
+                .hasMatch(codeLine.content.trim())) {
+          reporter.atOffset(
+            offset: codeLine.lineOffset,
+            length: codeLine.lineLength,
+            errorCode: _code,
+          );
         }
       }
     });

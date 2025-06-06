@@ -5,7 +5,8 @@ class MissingBuildWhen extends DartLintRule {
 
   static const _code = LintCode(
     name: 'missing_build_when',
-    problemMessage: '\'BlocBuilder\' objects must declare \'buildWhen\' parameter.',
+    problemMessage:
+        '\'BlocBuilder\' objects must declare \'buildWhen\' parameter.',
   );
 
   @override
@@ -15,12 +16,13 @@ class MissingBuildWhen extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addInstanceCreationExpression((node) {
-      if (node.staticType?.toString().trim().startsWith('BlocBuilder') == true &&
+      if (node.staticType?.toString().trim().startsWith('BlocBuilder') ==
+              true &&
           node.argumentList.arguments
                   .whereType<NamedExpression>()
                   .any((element) => element.name.label.name == 'buildWhen') ==
               false) {
-        reporter.reportErrorForNode(code, node);
+        reporter.atNode(node, _code);
       }
     });
   }
@@ -42,7 +44,8 @@ class AddBuildWhen extends DartFix {
   ) {
     context.registry.addInstanceCreationExpression((node) {
       if (!node.sourceRange.intersects(analysisError.sourceRange) ||
-          node.staticType?.toString().trim().startsWith('BlocBuilder') != true) {
+          node.staticType?.toString().trim().startsWith('BlocBuilder') !=
+              true) {
         return;
       }
 

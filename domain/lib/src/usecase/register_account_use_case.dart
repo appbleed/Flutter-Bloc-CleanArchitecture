@@ -27,18 +27,22 @@ class RegisterAccountUseCase
 }
 
 @freezed
-class RegisterAccountInput extends BaseInput with _$RegisterAccountInput {
+abstract class RegisterAccountInput extends BaseInput
+    with _$RegisterAccountInput {
   const RegisterAccountInput._();
 
   const factory RegisterAccountInput({
     @Default('') String email,
     @Default('') String password,
     @Default('') String confirmPassword,
+    @Default('') String username,
+    @Default(Gender.unknown) Gender gender,
   }) = _RegisterAccountInput;
 }
 
 @freezed
-class RegisterAccountOutput extends BaseOutput with _$RegisterAccountOutput {
+abstract class RegisterAccountOutput extends BaseOutput
+    with _$RegisterAccountOutput {
   const RegisterAccountOutput._();
 
   const factory RegisterAccountOutput() = _RegisterAccountOutput;

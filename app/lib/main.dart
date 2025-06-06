@@ -27,8 +27,9 @@ void _reportError(Object error, StackTrace stackTrace) {
 
 Future<LoadInitialResourceOutput> _loadInitialResource() async {
   final result = runCatching(
-    action: () =>
-        GetIt.instance.get<LoadInitialResourceUseCase>().execute(const LoadInitialResourceInput()),
+    action: () => GetIt.instance
+        .get<LoadInitialResourceUseCase>()
+        .execute(const LoadInitialResourceInput()),
   );
 
   return result.when(

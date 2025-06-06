@@ -22,7 +22,10 @@ class AppBlocObserver extends BlocObserver {
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
     if (logOnChange) {
-      Log.d('onChange $change', name: bloc.runtimeType.toString());
+      Log.d(
+        'onChange { currentState: ${change.currentState}, nextState: ${change.nextState} }',
+        name: bloc.runtimeType.toString(),
+      );
     }
   }
 
@@ -30,7 +33,7 @@ class AppBlocObserver extends BlocObserver {
   void onCreate(BlocBase<dynamic> bloc) {
     super.onCreate(bloc);
     if (logOnCreate) {
-      Log.d('created', name: bloc.runtimeType.toString());
+      Log.d('onCreate', name: bloc.runtimeType.toString());
     }
   }
 
@@ -38,7 +41,7 @@ class AppBlocObserver extends BlocObserver {
   void onClose(BlocBase<dynamic> bloc) {
     super.onClose(bloc);
     if (logOnClose) {
-      Log.d('closed', name: bloc.runtimeType.toString());
+      Log.d('onClose', name: bloc.runtimeType.toString());
     }
   }
 
@@ -46,7 +49,8 @@ class AppBlocObserver extends BlocObserver {
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
     if (logOnError) {
-      Log.d('onError $error', name: bloc.runtimeType.toString());
+      Log.e('onError $error',
+          name: bloc.runtimeType.toString(), stackTrace: stackTrace);
     }
   }
 
@@ -59,10 +63,14 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onTransition(Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
+  void onTransition(
+      Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
     super.onTransition(bloc, transition);
     if (logOnTransition) {
-      Log.d('onTransition $transition', name: bloc.runtimeType.toString());
+      Log.d(
+        'onTransition { currentState: ${transition.currentState}, event: ${transition.event}, nextState: ${transition.nextState} }',
+        name: bloc.runtimeType.toString(),
+      );
     }
   }
 }

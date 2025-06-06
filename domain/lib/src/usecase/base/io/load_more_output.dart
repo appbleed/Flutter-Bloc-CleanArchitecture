@@ -6,7 +6,7 @@ import '../../../../domain.dart';
 part 'load_more_output.freezed.dart';
 
 @freezed
-class LoadMoreOutput<T> extends BaseOutput with _$LoadMoreOutput<T> {
+abstract class LoadMoreOutput<T> extends BaseOutput with _$LoadMoreOutput<T> {
   const LoadMoreOutput._();
 
   const factory LoadMoreOutput({

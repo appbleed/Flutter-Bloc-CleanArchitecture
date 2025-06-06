@@ -15,8 +15,13 @@ class LoadInitialResourceUseCase extends BaseSyncUseCase<
   @protected
   @override
   LoadInitialResourceOutput buildUseCase(LoadInitialResourceInput input) {
+    final initialRoute =
+        _repository.isLoggedIn ? InitialAppRoute.main : InitialAppRoute.login;
     final initialRoutes = [
-      _repository.isLoggedIn ? InitialAppRoute.main : InitialAppRoute.login
+      if (initialRoute == InitialAppRoute.main)
+        const AppRouteInfo.main()
+      else
+        const AppRouteInfo.login()
     ];
 
     return LoadInitialResourceOutput(initialRoutes: initialRoutes);
@@ -24,7 +29,7 @@ class LoadInitialResourceUseCase extends BaseSyncUseCase<
 }
 
 @freezed
-class LoadInitialResourceInput extends BaseInput
+abstract class LoadInitialResourceInput extends BaseInput
     with _$LoadInitialResourceInput {
   const LoadInitialResourceInput._();
 
@@ -32,7 +37,7 @@ class LoadInitialResourceInput extends BaseInput
 }
 
 @freezed
-class LoadInitialResourceOutput extends BaseOutput
+abstract class LoadInitialResourceOutput extends BaseOutput
     with _$LoadInitialResourceOutput {
   const LoadInitialResourceOutput._();
 

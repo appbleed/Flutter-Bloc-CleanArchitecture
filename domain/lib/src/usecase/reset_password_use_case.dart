@@ -42,7 +42,7 @@ class ResetPasswordUseCase
 }
 
 @freezed
-class ResetPasswordInput extends BaseInput with _$ResetPasswordInput {
+abstract class ResetPasswordInput extends BaseInput with _$ResetPasswordInput {
   const ResetPasswordInput._();
 
   const factory ResetPasswordInput({
@@ -54,7 +54,8 @@ class ResetPasswordInput extends BaseInput with _$ResetPasswordInput {
 }
 
 @freezed
-class ResetPasswordOutput extends BaseOutput with _$ResetPasswordOutput {
+abstract class ResetPasswordOutput extends BaseOutput
+    with _$ResetPasswordOutput {
   const ResetPasswordOutput._();
 
   const factory ResetPasswordOutput() = _ResetPasswordOutput;

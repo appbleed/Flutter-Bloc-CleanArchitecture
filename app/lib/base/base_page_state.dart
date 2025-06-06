@@ -10,34 +10,45 @@ import '../app.dart';
 abstract class BasePageState<T extends StatefulWidget, B extends BaseBloc>
     extends BasePageStateDelegate<T, B> with LogMixin {}
 
-abstract class BasePageStateDelegate<T extends StatefulWidget, B extends BaseBloc> extends State<T>
-    implements ExceptionHandlerListener {
-  late final AppNavigator navigator = GetIt.instance.get<AppNavigator>();
-  late final AppBloc appBloc = GetIt.instance.get<AppBloc>();
-  late final ExceptionMessageMapper exceptionMessageMapper = const ExceptionMessageMapper();
-  late final ExceptionHandler exceptionHandler = ExceptionHandler(
-    navigator: navigator,
-    listener: this,
-  );
-
-  late final CommonBloc commonBloc = GetIt.instance.get<CommonBloc>()
-    ..navigator = navigator
-    ..disposeBag = disposeBag
-    ..appBloc = appBloc
-    ..exceptionHandler = exceptionHandler
-    ..exceptionMessageMapper = exceptionMessageMapper;
-
-  late final B bloc = GetIt.instance.get<B>()
-    ..navigator = navigator
-    ..disposeBag = disposeBag
-    ..appBloc = appBloc
-    ..commonBloc = commonBloc
-    ..exceptionHandler = exceptionHandler
-    ..exceptionMessageMapper = exceptionMessageMapper;
-
-  late final DisposeBag disposeBag = DisposeBag();
+abstract class BasePageStateDelegate<T extends StatefulWidget,
+    B extends BaseBloc> extends State<T> implements ExceptionHandlerListener {
+  late final AppNavigator navigator;
+  late final AppBloc appBloc;
+  late final ExceptionMessageMapper exceptionMessageMapper;
+  late final ExceptionHandler exceptionHandler;
+  late final CommonBloc commonBloc;
+  late final B bloc;
+  late final DisposeBag disposeBag;
 
   bool get isAppWidget => false;
+
+  @override
+  void initState() {
+    super.initState();
+    navigator = GetIt.instance.get<AppNavigator>();
+    appBloc = GetIt.instance.get<AppBloc>();
+    exceptionMessageMapper = const ExceptionMessageMapper();
+    exceptionHandler = ExceptionHandler(
+      navigator: navigator,
+      listener: this,
+    );
+    disposeBag = DisposeBag();
+
+    commonBloc = GetIt.instance.get<CommonBloc>()
+      ..navigator = navigator
+      ..disposeBag = disposeBag
+      ..appBloc = appBloc
+      ..exceptionHandler = exceptionHandler
+      ..exceptionMessageMapper = exceptionMessageMapper;
+
+    bloc = GetIt.instance.get<B>()
+      ..navigator = navigator
+      ..disposeBag = disposeBag
+      ..appBloc = appBloc
+      ..commonBloc = commonBloc
+      ..exceptionHandler = exceptionHandler
+      ..exceptionMessageMapper = exceptionMessageMapper;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +66,12 @@ abstract class BasePageStateDelegate<T extends StatefulWidget, B extends BaseBlo
         ],
         child: BlocListener<CommonBloc, CommonState>(
           listenWhen: (previous, current) =>
-              previous.appExceptionWrapper != current.appExceptionWrapper &&
-              current.appExceptionWrapper != null,
+              previous.appExceptionWrapper != current.appExceptionWrapper,
           listener: (context, state) {
-            handleException(state.appExceptionWrapper!);
+            final appExceptionWrapper = state.appExceptionWrapper;
+            if (appExceptionWrapper != null) {
+              handleException(appExceptionWrapper);
+            }
           },
           child: buildPageListeners(
             child: isAppWidget
@@ -67,7 +80,8 @@ abstract class BasePageStateDelegate<T extends StatefulWidget, B extends BaseBlo
                     children: [
                       buildPage(context),
                       BlocBuilder<CommonBloc, CommonState>(
-                        buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+                        buildWhen: (previous, current) =>
+                            previous.isLoading != current.isLoading,
                         builder: (context, state) => Visibility(
                           visible: state.isLoading,
                           child: buildPageLoading(),

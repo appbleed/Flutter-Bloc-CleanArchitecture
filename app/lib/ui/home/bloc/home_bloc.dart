@@ -27,23 +27,27 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
   }
   final GetUsersUseCase _getUsersUseCase;
 
-  FutureOr<void> _onHomePageInitiated(HomePageInitiated event, Emitter<HomeState> emit) async {
+  FutureOr<void> _onHomePageInitiated(
+      HomePageInitiated event, Emitter<HomeState> emit) async {
     await _getUsers(
       emit: emit,
       isInitialLoad: true,
       doOnSubscribe: () async => emit(state.copyWith(isShimmerLoading: true)),
-      doOnSuccessOrError: () async => emit(state.copyWith(isShimmerLoading: false)),
+      doOnSuccessOrError: () async =>
+          emit(state.copyWith(isShimmerLoading: false)),
     );
   }
 
-  FutureOr<void> _onUserLoadMore(UserLoadMore event, Emitter<HomeState> emit) async {
+  FutureOr<void> _onUserLoadMore(
+      UserLoadMore event, Emitter<HomeState> emit) async {
     await _getUsers(
       emit: emit,
       isInitialLoad: false,
     );
   }
 
-  FutureOr<void> _onHomePageRefreshed(HomePageRefreshed event, Emitter<HomeState> emit) async {
+  FutureOr<void> _onHomePageRefreshed(
+      HomePageRefreshed event, Emitter<HomeState> emit) async {
     await _getUsers(
       emit: emit,
       isInitialLoad: true,
@@ -51,8 +55,8 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
       doOnSuccessOrError: () async {
         emit(state.copyWith(isShimmerLoading: false));
 
-        if (!event.completer.isCompleted) {
-          event.completer.complete();
+        if (event.completer?.isCompleted == false) {
+          event.completer?.complete();
         }
       },
     );
@@ -64,19 +68,30 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
     Future<void> Function()? doOnSubscribe,
     Future<void> Function()? doOnSuccessOrError,
   }) async {
-    return runBlocCatching(
-      action: () async {
-        emit(state.copyWith(loadUsersException: null));
-        final output = await _getUsersUseCase.execute(const GetUsersInput(), isInitialLoad);
-        emit(state.copyWith(users: output));
-      },
-      doOnError: (e) async {
-        emit(state.copyWith(loadUsersException: e));
-      },
-      doOnSubscribe: doOnSubscribe,
-      doOnSuccessOrError: doOnSuccessOrError,
-      handleLoading: false,
-      maxRetries: 3,
+    return runBlocCatchingV2(
+      RunBlocCatchingParams(
+        action: () async {
+          emit(state.copyWith(loadUsersException: null));
+          final output = await _getUsersUseCase.execute(
+              const GetUsersInput(), isInitialLoad);
+          emit(
+            state.copyWith(
+              users: PagedList(
+                data: output.data,
+                isLastPage: output.isLastPage,
+                otherData: output.otherData,
+              ),
+            ),
+          );
+        },
+        doOnError: (e) async {
+          emit(state.copyWith(loadUsersException: e));
+        },
+        doOnSubscribe: doOnSubscribe,
+        doOnSuccessOrError: doOnSuccessOrError,
+        handleLoading: false,
+        maxRetries: 3,
+      ),
     );
   }
 }

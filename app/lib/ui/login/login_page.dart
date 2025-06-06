@@ -22,7 +22,9 @@ class _LoginPageState extends BasePageState<LoginPage, LoginBloc> {
     return CommonScaffold(
       hideKeyboardWhenTouchOutside: true,
       appBar: CommonAppBar(
-        leadingIcon: navigator.canPopSelfOrChildren ? LeadingIcon.close : LeadingIcon.none,
+        leadingIcon: navigator.canPopSelfOrChildren
+            ? LeadingIcon.close
+            : LeadingIcon.none,
         leadingIconColor: AppColors.current.secondaryColor,
         titleType: AppBarTitle.text,
         centerTitle: true,
@@ -38,19 +40,22 @@ class _LoginPageState extends BasePageState<LoginPage, LoginBloc> {
               AppTextField(
                 title: S.current.email,
                 hintText: S.current.email,
-                onChanged: (email) => bloc.add(EmailTextFieldChanged(email: email)),
+                onChanged: (email) =>
+                    bloc.add(EmailTextFieldChanged(email: email)),
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: Dimens.d24.responsive()),
               AppTextField(
                 title: S.current.password,
                 hintText: S.current.password,
-                onChanged: (pass) => bloc.add(PasswordTextFieldChanged(password: pass)),
+                onChanged: (pass) =>
+                    bloc.add(PasswordTextFieldChanged(password: pass)),
                 keyboardType: TextInputType.visiblePassword,
               ),
               SizedBox(height: Dimens.d15.responsive()),
               BlocBuilder<LoginBloc, LoginState>(
-                buildWhen: (previous, current) => previous.onPageError != current.onPageError,
+                buildWhen: (previous, current) =>
+                    previous.onPageError != current.onPageError,
                 builder: (_, state) => Text(
                   state.onPageError,
                   style: AppTextStyles.s14w400Secondary(),
@@ -58,15 +63,17 @@ class _LoginPageState extends BasePageState<LoginPage, LoginBloc> {
               ),
               BlocBuilder<LoginBloc, LoginState>(
                 buildWhen: (previous, current) =>
-                    previous.isLoginButtonEnabled != current.isLoginButtonEnabled,
+                    previous.isLoginButtonEnabled !=
+                    current.isLoginButtonEnabled,
                 builder: (context, state) {
                   return ElevatedButton(
                     onPressed: state.isLoginButtonEnabled
                         ? () => bloc.add(const LoginButtonPressed())
                         : null,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(AppColors.current.primaryColor
-                          .withOpacity(state.isLoginButtonEnabled ? 1 : 0.5)),
+                      backgroundColor: WidgetStateProperty.all(
+                          AppColors.current.primaryColor.withValues(
+                              alpha: state.isLoginButtonEnabled ? 1 : 0.5)),
                     ),
                     child: Text(
                       S.current.login,
@@ -79,7 +86,8 @@ class _LoginPageState extends BasePageState<LoginPage, LoginBloc> {
               ElevatedButton(
                 onPressed: () => bloc.add(const FakeLoginButtonPressed()),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(AppColors.current.primaryColor),
+                  backgroundColor:
+                      WidgetStateProperty.all(AppColors.current.primaryColor),
                 ),
                 child: Text(
                   S.current.fakeLogin,

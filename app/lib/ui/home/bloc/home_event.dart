@@ -11,23 +11,24 @@ abstract class HomeEvent extends BaseBlocEvent {
 }
 
 @freezed
-class HomePageInitiated extends HomeEvent with _$HomePageInitiated {
+abstract class HomePageInitiated extends HomeEvent with _$HomePageInitiated {
   const HomePageInitiated._();
 
   const factory HomePageInitiated() = _HomePageInitiated;
 }
 
 @freezed
-class HomePageRefreshed extends HomeEvent with _$HomePageRefreshed {
+abstract class HomePageRefreshed extends HomeEvent with _$HomePageRefreshed {
   const HomePageRefreshed._();
 
   const factory HomePageRefreshed({
     @Default(false) bool isInitial,
+    Completer<void>? completer,
   }) = _HomePageRefreshed;
 }
 
 @freezed
-class UserLoadMore extends HomeEvent with _$UserLoadMore {
+abstract class UserLoadMore extends HomeEvent with _$UserLoadMore {
   const UserLoadMore._();
 
   const factory UserLoadMore() = _UserLoadMore;

@@ -23,7 +23,8 @@ class _SearchPageState extends BasePageState<SearchPage, SearchBloc> {
       body: Center(
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.current.primaryColor),
+            backgroundColor:
+                WidgetStateProperty.all(AppColors.current.primaryColor),
           ),
           onPressed: () {
             navigator.push(const AppRouteInfo.login());

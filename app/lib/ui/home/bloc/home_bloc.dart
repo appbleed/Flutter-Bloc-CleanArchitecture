@@ -78,7 +78,7 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
             state.copyWith(
               users: PagedList(
                 data: output.data,
-                isLastPage: output.isLastPage,
+                next: output.isLastPage ? null : output.nextPage,
                 otherData: output.otherData,
               ),
             ),

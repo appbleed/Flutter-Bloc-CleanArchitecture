@@ -5,7 +5,7 @@ import '../../../base/bloc/base_bloc_state.dart';
 part 'main_state.freezed.dart';
 
 @freezed
-class MainState extends BaseBlocState with _$MainState {
+abstract class MainState extends BaseBlocState with _$MainState {
   const MainState._();
 
   const factory MainState({

@@ -66,7 +66,7 @@ class _MyPagePageState extends BasePageState<MyPagePage, MyPageBloc> {
                 onPressed: () => bloc.add(const LogoutButtonPressed()),
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(AppColors.current.primaryColor),
+                      WidgetStateProperty.all(AppColors.current.primaryColor),
                 ),
                 child: Text(
                   S.current.logout,

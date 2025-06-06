@@ -7,11 +7,13 @@ import '../../../base/bloc/base_bloc_state.dart';
 part 'home_state.freezed.dart';
 
 @freezed
-class HomeState extends BaseBlocState with _$HomeState {
+abstract class HomeState extends BaseBlocState with _$HomeState {
   const HomeState._();
 
   const factory HomeState({
     @Default(PagedList(data: <User>[])) PagedList<User> users,
     @Default(0) int loadMoreUsersCount,
+    @Default(false) bool isShimmerLoading,
+    AppException? loadUsersException,
   }) = _HomeState;
 }

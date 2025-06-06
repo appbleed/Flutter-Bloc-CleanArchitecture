@@ -4,22 +4,16 @@ part 'server_error_detail.freezed.dart';
 
 @freezed
 class ServerErrorDetail with _$ServerErrorDetail {
-  const ServerErrorDetail._();
-
-  const factory ServerErrorDetail({
+  const factory ServerErrorDetail.detailed({
     String? detail,
     String? path,
-
-    /// server-defined error code
     String? serverErrorId,
-
-    /// server-defined status code
     int? serverStatusCode,
-
-    /// server-defined message
-    String? message,
-
-    /// server-defined field
+    String? detailMessage,
     String? field,
-  }) = _ServerErrorDetail;
+  }) = _DetailedServerErrorDetail;
+
+  const factory ServerErrorDetail.simple(
+    String? simpleMessage,
+  ) = _SimpleServerErrorDetail;
 }

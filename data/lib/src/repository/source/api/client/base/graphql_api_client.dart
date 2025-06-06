@@ -16,7 +16,8 @@ class GraphQLApiClient {
   GraphQLApiClient({
     this.baseUrl = '',
     this.interceptors = const [],
-    this.errorResponseMapperType = ApiClientDefaultSetting.defaultErrorResponseMapperType,
+    this.errorResponseMapperType =
+        ApiClientDefaultSetting.defaultErrorResponseMapperType,
     this.connectTimeout = ServerTimeoutConstants.connectTimeout,
     this.sendTimeout = ServerTimeoutConstants.sendTimeout,
     this.receiveTimeout = ServerTimeoutConstants.receiveTimeout,
@@ -72,14 +73,11 @@ class GraphQLApiClient {
     );
 
     if (response.exception != null) {
-      throw GraphQLExceptionMapper(
-        BaseErrorResponseMapper.fromType(
-          errorResponseMapperType ?? this.errorResponseMapperType,
-        ),
-      ).map(response.exception);
+      throw GraphQLExceptionMapper().map(response.exception);
     }
 
-    return BaseSuccessResponseMapper<T, T>.fromType(SuccessResponseMapperType.jsonObject)
+    return BaseSuccessResponseMapper<T, T>.fromType(
+            SuccessResponseMapperType.jsonObject)
         .map(response: response.data, decoder: decoder);
   }
 

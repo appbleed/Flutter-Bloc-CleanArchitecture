@@ -17,17 +17,20 @@ abstract class BaseErrorResponseMapper<T extends Object> {
   factory BaseErrorResponseMapper.fromType(ErrorResponseMapperType type) {
     switch (type) {
       case ErrorResponseMapperType.jsonObject:
-        return JsonObjectErrorResponseMapper() as BaseErrorResponseMapper<T>;
+        return const JsonObjectErrorResponseMapper()
+            as BaseErrorResponseMapper<T>;
       case ErrorResponseMapperType.jsonArray:
-        return JsonArrayErrorResponseMapper() as BaseErrorResponseMapper<T>;
+        return const JsonArrayErrorResponseMapper()
+            as BaseErrorResponseMapper<T>;
       case ErrorResponseMapperType.line:
-        return LineErrorResponseMapper() as BaseErrorResponseMapper<T>;
+        return const LineErrorResponseMapper() as BaseErrorResponseMapper<T>;
       case ErrorResponseMapperType.twitter:
-        return TwitterErrorResponseMapper() as BaseErrorResponseMapper<T>;
+        return const TwitterErrorResponseMapper() as BaseErrorResponseMapper<T>;
       case ErrorResponseMapperType.goong:
-        return GoongErrorResponseMapper() as BaseErrorResponseMapper<T>;
+        return const GoongErrorResponseMapper() as BaseErrorResponseMapper<T>;
       case ErrorResponseMapperType.firebaseStorage:
-        return FirebaseStorageErrorResponseMapper() as BaseErrorResponseMapper<T>;
+        return const FirebaseStorageErrorResponseMapper()
+            as BaseErrorResponseMapper<T>;
     }
   }
 
@@ -46,7 +49,8 @@ abstract class BaseErrorResponseMapper<T extends Object> {
     } on RemoteException catch (_) {
       rethrow;
     } catch (e) {
-      throw RemoteException(kind: RemoteExceptionKind.decodeError, rootException: e);
+      throw RemoteException(
+          kind: RemoteExceptionKind.decodeError, rootException: e);
     }
   }
 

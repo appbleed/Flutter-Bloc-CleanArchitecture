@@ -4,7 +4,7 @@ part 'api_notification_data.freezed.dart';
 part 'api_notification_data.g.dart';
 
 @freezed
-class ApiNotificationData with _$ApiNotificationData {
+abstract class ApiNotificationData with _$ApiNotificationData {
   const ApiNotificationData._();
 
   const factory ApiNotificationData({

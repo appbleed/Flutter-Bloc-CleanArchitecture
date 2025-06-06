@@ -22,12 +22,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_secure_storage: 9.2.4
+  freezed_annotation: 3.0.0
   get_it: 8.0.3
-  # gql: 0.14.0  # Temporarily commented due to dependency conflicts
-  # gql_dio_link: 0.3.0
-  # gql_exec: 0.4.3
-  # gql_link: 0.5.1
-  # graphql_flutter:  # Temporarily commented due to dependency conflicts
+  gql: ^1.0.1-alpha+1730759315362
+  gql_dio_link: ^1.0.1+1
+  gql_exec: ^1.1.1-alpha+1699813812660
+  gql_link: ^1.0.1-alpha+1730759315378
+  graphql_flutter: ^5.2.0
   hotreloader: 4.3.0
   injectable: 2.5.0
   json_annotation: 4.9.0
@@ -37,6 +38,7 @@ dependencies:
   rxdart: 0.28.0
   shared:
     path: ../shared
+  shared_preferences: 2.5.3
   tuple: 2.0.2
   vm_service: 15.0.0
 
@@ -47,7 +49,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: 3.0.6
-  freezed_annotation: 3.0.0
   injectable_generator: 2.7.0
   json_serializable: 6.9.5
   logging: 1.3.0

@@ -55,7 +55,7 @@ export 'src/repository/source/api/model/base/data_response.dart';
 export 'src/repository/source/api/model/base/records_response.dart';
 export 'src/repository/source/api/model/base/results_response.dart';
 export 'src/repository/source/api/model/generated/pokedex_graphql.dart';
-export 'src/repository/source/api/model/generated/pokedex_graphql.graphql.dart';
+// export 'src/repository/source/api/model/generated/pokedex_graphql.graphql.dart'; // TODO: GraphQL generated file missing
 export 'src/repository/source/api/model/mock/mock_data.dart';
 export 'src/repository/source/api/refresh_token_api_service.dart';
 export 'src/repository/source/base/base_data_mapper.dart';

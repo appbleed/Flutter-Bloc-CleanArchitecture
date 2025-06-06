@@ -1,17 +1,21 @@
-import 'package:dio/dio.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+// import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:shared/shared.dart';
-import '../../../../../data.dart';
 
+// TODO(dev): GraphQL exception mapper temporarily disabled due to dependency conflicts
 class GraphQLExceptionMapper extends ExceptionMapper<RemoteException> {
-  GraphQLExceptionMapper(this._errorResponseMapper);
-
-  final BaseErrorResponseMapper<dynamic> _errorResponseMapper;
-  final _serverGraphQLErrorResponseMapper = const ServerGraphQLErrorMapper();
+  GraphQLExceptionMapper();
 
   @override
   RemoteException map(Object? exception) {
+    // Temporary implementation - replace with actual GraphQL logic once dependencies are resolved
+    return RemoteException(
+      kind: RemoteExceptionKind.unknown,
+      rootException: exception,
+    );
+
+    /*
+    // Original GraphQL implementation - uncomment once dependencies are resolved
     if (exception is! OperationException) {
       return RemoteException(kind: RemoteExceptionKind.unknown, rootException: exception);
     }
@@ -24,10 +28,10 @@ class GraphQLExceptionMapper extends ExceptionMapper<RemoteException> {
         if (dioException.response?.data != null) {
           serverError = dioException.response!.data! is Map
               ? _errorResponseMapper.map(dioException.response!.data!)
-              : ServerError(
-                  generalMessage: dioException.response!.data! is String
+              : ServerError.simple(
+                  dioException.response!.data! is String
                       ? dioException.response!.data! as String
-                      : null,
+                      : 'Unknown server error',
                 );
         }
 
@@ -47,5 +51,6 @@ class GraphQLExceptionMapper extends ExceptionMapper<RemoteException> {
         serverError: serverError,
       );
     }
+    */
   }
 }

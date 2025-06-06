@@ -4,9 +4,13 @@ import 'package:shared/shared.dart';
 import '../../../../../../../data.dart';
 
 @Injectable()
-class LineErrorResponseMapper extends BaseErrorResponseMapper<Map<String, dynamic>> {
+class LineErrorResponseMapper
+    extends BaseErrorResponseMapper<Map<String, dynamic>> {
+  const LineErrorResponseMapper();
+
   @override
   ServerError mapToServerError(Map<String, dynamic>? json) {
-    return ServerError(generalMessage: json?['error_description'] as String?);
+    return ServerError.general(
+        generalMessage: json?['error_description'] as String?);
   }
 }

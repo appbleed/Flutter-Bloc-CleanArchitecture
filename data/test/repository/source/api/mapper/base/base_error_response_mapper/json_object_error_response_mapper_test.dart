@@ -6,11 +6,12 @@ void main() {
   late JsonObjectErrorResponseMapper jsonObjectErrorResponseMapper;
 
   setUp(() {
-    jsonObjectErrorResponseMapper = JsonObjectErrorResponseMapper();
+    jsonObjectErrorResponseMapper = const JsonObjectErrorResponseMapper();
   });
 
   group('test `map` function', () {
-    test('should return correct ServerError when using valid data response', () async {
+    test('should return correct ServerError when using valid data response',
+        () async {
       // arrange
       final errorResponse = {
         'error': {
@@ -19,7 +20,7 @@ void main() {
           'message': 'The request is invalid',
         },
       };
-      const expected = ServerError(
+      const expected = ServerError.general(
         generalServerStatusCode: 400,
         generalServerErrorId: 'invalid_request',
         generalMessage: 'The request is invalid',
@@ -30,7 +31,8 @@ void main() {
       expect(result, expected);
     });
 
-    test('should return correct ServerError when some JSON keys are incorrect', () async {
+    test('should return correct ServerError when some JSON keys are incorrect',
+        () async {
       // arrange
       final errorResponse = {
         'error': {
@@ -39,7 +41,7 @@ void main() {
           'er_message': 'The request is invalid',
         },
       };
-      const expected = ServerError(generalServerStatusCode: 400);
+      const expected = ServerError.general(generalServerStatusCode: 400);
       // act
       final result = jsonObjectErrorResponseMapper.map(errorResponse);
       // assert
@@ -56,14 +58,15 @@ void main() {
             'er_message': 'The request is invalid',
           },
         };
-        const expected = ServerError();
+        const expected = ServerError.general();
         final result = jsonObjectErrorResponseMapper.map(errorResponse);
         // assert
         expect(result, expected);
       },
     );
 
-    test('should thow RemoteException.decodeError when using invalid data type', () async {
+    test('should thow RemoteException.decodeError when using invalid data type',
+        () async {
       // arrange
       final errorResponse = {
         'error': {

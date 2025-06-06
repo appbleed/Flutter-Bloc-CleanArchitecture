@@ -6,41 +6,93 @@ void main() {
   late JsonArrayErrorResponseMapper jsonArrayErrorResponseMapper;
 
   setUp(() {
-    jsonArrayErrorResponseMapper = JsonArrayErrorResponseMapper();
+    jsonArrayErrorResponseMapper = const JsonArrayErrorResponseMapper();
   });
 
   group('test `map` function', () {
-    test('should return correct ServerError when using valid data response', () async {
+    test(
+        'should return correct ServerError with code and message when using valid response',
+        () {
       // arrange
-      final errorResponse = [
-        {
-          'code': 400,
-          'message': 'The request is invalid',
-        },
-      ];
-      const expected = ServerError(
+      final response = {
+        'errors': [
+          {'code': 'error_code_1', 'message': 'error_message_1'},
+          {'code': 'error_code_2', 'message': 'error_message_2'},
+        ],
+      };
+      const expected = ServerError.general(
         errors: [
-          ServerErrorDetail(
-            serverStatusCode: 400,
-            message: 'The request is invalid',
-          ),
+          ServerErrorDetail.detailed(
+              field: 'error_code_1', detailMessage: 'error_message_1'),
+          ServerErrorDetail.detailed(
+              field: 'error_code_2', detailMessage: 'error_message_2'),
         ],
       );
       // act
-      final result = jsonArrayErrorResponseMapper.map(errorResponse);
+      final result = jsonArrayErrorResponseMapper.map(response);
       // assert
       expect(result, expected);
     });
 
-    test('should return correct ServerError when some JSON keys are incorrect', () async {
+    test(
+        'should return correct ServerError with code and message when using valid response with null message',
+        () {
       // arrange
-      final errorResponse = [
-        {
-          'code': 400, // correct key
-          'error_message': 'The request is invalid', // incorrect key
-        },
-      ];
-      const expected = ServerError(errors: [ServerErrorDetail(serverStatusCode: 400)]);
+      final response = {
+        'errors': [
+          {'code': 'error_code_1'},
+          {'code': 'error_code_2', 'message': 'error_message_2'},
+        ],
+      };
+      const expected = ServerError.general(
+        errors: [
+          ServerErrorDetail.detailed(
+              field: 'error_code_2', detailMessage: 'error_message_2'),
+        ],
+      );
+      // act
+      final result = jsonArrayErrorResponseMapper.map(response);
+      // assert
+      expect(result, expected);
+    });
+
+    test(
+        'should return correct ServerError with code and message when using valid response with null code',
+        () {
+      // arrange
+      final response = {
+        'errors': [
+          {'message': 'error_message_1'},
+          {'code': 'error_code_2', 'message': 'error_message_2'},
+        ],
+      };
+      const expected = ServerError.general(
+        errors: [
+          ServerErrorDetail.detailed(detailMessage: 'error_message_1'),
+          ServerErrorDetail.detailed(
+              field: 'error_code_2', detailMessage: 'error_message_2'),
+        ],
+      );
+      // act
+      final result = jsonArrayErrorResponseMapper.map(response);
+      // assert
+      expect(result, expected);
+    });
+
+    test('should return correct ServerError when some JSON keys are incorrect',
+        () async {
+      // arrange
+      final errorResponse = {
+        'errors': [
+          {
+            'code': 400, // correct key
+            'error_message': 'The request is invalid', // incorrect key
+          },
+        ]
+      };
+      const expected = ServerError.general(
+        errors: [ServerErrorDetail.detailed(serverStatusCode: 400)],
+      );
       // act
       final result = jsonArrayErrorResponseMapper.map(errorResponse);
       // assert
@@ -51,20 +103,24 @@ void main() {
       'should return corresponding ServerError when all JSON keys are incorrect',
       () async {
         // arrange
-        final errorResponse = [
-          {
-            'er_code': 400, // incorrect key
-            'error_message': 'The request is invalid', // incorrect key
-          },
-        ];
-        const expected = ServerError(errors: [ServerErrorDetail()]);
+        final errorResponse = {
+          'errors': [
+            {
+              'er_code': 400, // incorrect key
+              'error_message': 'The request is invalid', // incorrect key
+            },
+          ]
+        };
+        const expected =
+            ServerError.general(errors: [ServerErrorDetail.detailed()]);
         final result = jsonArrayErrorResponseMapper.map(errorResponse);
         // assert
         expect(result, expected);
       },
     );
 
-    test('should thow RemoteException.decodeError when using invalid data type', () async {
+    test('should thow RemoteException.decodeError when using invalid data type',
+        () async {
       // arrange
       final errorResponse = [
         {
@@ -75,7 +131,8 @@ void main() {
       // assert
       expect(
         () => jsonArrayErrorResponseMapper.map(errorResponse),
-        throwsA((e) => e is RemoteException && e.kind == RemoteExceptionKind.decodeError),
+        throwsA((e) =>
+            e is RemoteException && e.kind == RemoteExceptionKind.decodeError),
       );
     });
   });

@@ -4,11 +4,14 @@ import 'package:shared/shared.dart';
 import '../../../../../../../data.dart';
 
 @Injectable()
-class GoongErrorResponseMapper extends BaseErrorResponseMapper<Map<String, dynamic>> {
+class GoongErrorResponseMapper
+    extends BaseErrorResponseMapper<Map<String, dynamic>> {
+  const GoongErrorResponseMapper();
+
   @override
   ServerError mapToServerError(Map<String, dynamic>? json) {
-    return ServerError(
-      generalMessage: json?['error']['message'] as String?,
+    return ServerError.general(
+      generalMessage: json?['message'] as String?,
     );
   }
 }

@@ -4,16 +4,18 @@ import 'package:shared/shared.dart';
 import '../../../../../../../data.dart';
 
 @Injectable()
-// ignore: avoid-dynamic
-class JsonArrayErrorResponseMapper extends BaseErrorResponseMapper<List<dynamic>> {
+class JsonArrayErrorResponseMapper
+    extends BaseErrorResponseMapper<List<dynamic>> {
+  const JsonArrayErrorResponseMapper();
+
   @override
-  // ignore: avoid-dynamic
   ServerError mapToServerError(List<dynamic>? data) {
-    return ServerError(
+    return ServerError.general(
+      generalMessage: data?.firstOrNull?['message'] as String?,
       errors: data
-              ?.map((jsonObject) => ServerErrorDetail(
-                    serverStatusCode: jsonObject['code'] as int?,
-                    message: jsonObject['message'] as String?,
+              ?.map((e) => ServerErrorDetail.detailed(
+                    detailMessage: e['message'] as String?,
+                    serverErrorId: e['error_code'] as String? ?? '',
                   ))
               .toList(growable: false) ??
           [],

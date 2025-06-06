@@ -6,7 +6,7 @@ part 'api_user_data.freezed.dart';
 part 'api_user_data.g.dart';
 
 @freezed
-class ApiUserData with _$ApiUserData {
+abstract class ApiUserData with _$ApiUserData {
   const ApiUserData._();
 
   const factory ApiUserData({
@@ -19,5 +19,6 @@ class ApiUserData with _$ApiUserData {
     @JsonKey(name: 'sex') int? gender,
   }) = _ApiUserData;
 
-  factory ApiUserData.fromJson(Map<String, dynamic> json) => _$ApiUserDataFromJson(json);
+  factory ApiUserData.fromJson(Map<String, dynamic> json) =>
+      _$ApiUserDataFromJson(json);
 }

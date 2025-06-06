@@ -11,9 +11,10 @@ class ConnectivityInterceptor extends BaseInterceptor {
   int get priority => BaseInterceptor.connectivityPriority;
 
   @override
-  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    if (connectivityResult.contains(ConnectivityResult.none)) {
       return handler.reject(
         DioException(
           requestOptions: options,

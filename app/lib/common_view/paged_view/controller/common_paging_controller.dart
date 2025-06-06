@@ -5,7 +5,8 @@ import 'package:shared/shared.dart';
 
 class CommonPagingController<T> implements Disposable {
   CommonPagingController({
-    this.invisibleItemsThreshold = PagingConstants.defaultInvisibleItemsThreshold,
+    this.invisibleItemsThreshold =
+        PagingConstants.defaultInvisibleItemsThreshold,
     this.firstPageKey = PagingConstants.initialPage,
   }) : pagingController = PagingController<int, T>(
           firstPageKey: firstPageKey,

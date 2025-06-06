@@ -163,6 +163,12 @@ abstract class BaseBlocDelegate<E extends BaseBlocEvent,
     }
   }
 
+  /// Simple wrapper for linter compatibility
+  Future<void> runBlocCatching(
+      {required Future<void> Function() action}) async {
+    await runBlocCatchingV2(RunBlocCatchingParams(action: action));
+  }
+
   bool _forceHandleError(AppException appException) {
     return appException is RemoteException &&
         appException.kind == RemoteExceptionKind.refreshTokenFailed;

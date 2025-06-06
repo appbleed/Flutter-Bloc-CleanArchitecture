@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +37,7 @@ class _MyAppState extends BasePageState<MyApp, AppBloc> {
           DeviceConstants.designDeviceHeight),
       builder: (context, _) => BlocBuilder<AppBloc, AppState>(
         buildWhen: (previous, current) =>
-            previous.isDarkTheme != current.isDarkTheme ||
+            previous.isDarkMode != current.isDarkMode ||
             previous.languageCode != current.languageCode,
         builder: (context, state) {
           return MaterialApp.router(
@@ -46,20 +45,16 @@ class _MyAppState extends BasePageState<MyApp, AppBloc> {
               final MediaQueryData data = MediaQuery.of(context);
 
               return MediaQuery(
-                data: data.copyWith(textScaleFactor: 1.0),
+                data: data.copyWith(textScaler: const TextScaler.linear(1.0)),
                 child: child ?? const SizedBox.shrink(),
               );
             },
-            routerDelegate: _appRouter.delegate(
-              deepLinkBuilder: (deepLink) {
-                return DeepLink(_mapRouteToPageRouteInfo());
-              },
+            routerConfig: _appRouter.config(
               navigatorObservers: () => [AppNavigatorObserver()],
             ),
-            routeInformationParser: _appRouter.defaultRouteParser(),
             title: UiConstants.materialAppTitle,
             color: UiConstants.taskMenuMaterialAppColor,
-            themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+            themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             theme: lightTheme,
             darkTheme: darkTheme,
             debugShowCheckedModeBanner: false,
@@ -80,16 +75,5 @@ class _MyAppState extends BasePageState<MyApp, AppBloc> {
         },
       ),
     );
-  }
-
-  List<PageRouteInfo> _mapRouteToPageRouteInfo() {
-    return widget.initialResource.initialRoutes.map<PageRouteInfo>((e) {
-      switch (e) {
-        case InitialAppRoute.login:
-          return const LoginRoute();
-        case InitialAppRoute.main:
-          return const MainRoute();
-      }
-    }).toList(growable: false);
   }
 }

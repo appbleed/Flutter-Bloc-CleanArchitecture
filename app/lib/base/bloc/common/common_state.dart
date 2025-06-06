@@ -6,7 +6,7 @@ import '../../../app.dart';
 part 'common_state.freezed.dart';
 
 @freezed
-class CommonState extends BaseBlocState with _$CommonState {
+abstract class CommonState extends BaseBlocState with _$CommonState {
   const CommonState._();
 
   const factory CommonState({

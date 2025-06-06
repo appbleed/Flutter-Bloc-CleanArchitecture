@@ -46,9 +46,9 @@ class AppBloc extends BaseBloc<AppEvent, AppState> {
     await runBlocCatching(
       action: () async {
         await _saveIsDarkModeUseCase
-            .execute(SaveIsDarkModeInput(isDarkMode: event.isDarkTheme));
-        _updateThemeSetting(event.isDarkTheme);
-        emit(state.copyWith(isDarkTheme: event.isDarkTheme));
+            .execute(SaveIsDarkModeInput(isDarkMode: event.isDarkMode));
+        _updateThemeSetting(event.isDarkMode);
+        emit(state.copyWith(isDarkMode: event.isDarkMode));
       },
     );
   }
@@ -68,11 +68,11 @@ class AppBloc extends BaseBloc<AppEvent, AppState> {
       AppInitiated event, Emitter<AppState> emit) async {
     await runBlocCatching(
       action: () async {
-        final output =
-            _getInitialAppDataUseCase.execute(const GetInitialAppDataInput());
+        final output = await _getInitialAppDataUseCase
+            .execute(const GetInitialAppDataInput());
         _updateThemeSetting(output.isDarkMode);
         emit(state.copyWith(
-          isDarkTheme: output.isDarkMode,
+          isDarkMode: output.isDarkMode,
           isLoggedIn: output.isLoggedIn,
           languageCode: output.languageCode,
         ));
@@ -80,8 +80,8 @@ class AppBloc extends BaseBloc<AppEvent, AppState> {
     );
   }
 
-  void _updateThemeSetting(bool isDarkTheme) {
+  void _updateThemeSetting(bool isDarkMode) {
     AppThemeSetting.currentAppThemeType =
-        isDarkTheme ? AppThemeType.dark : AppThemeType.light;
+        isDarkMode ? AppThemeType.dark : AppThemeType.light;
   }
 }

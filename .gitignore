@@ -66,4 +66,3 @@ tools/gen_text_styles/output/
 env/
 .fvm/
 *.mdb
-pubspec_overrides.yaml

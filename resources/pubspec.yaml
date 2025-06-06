@@ -7,11 +7,9 @@ environment:
   sdk: ">=3.0.5 <4.0.0"
   flutter: ">=1.17.0"
 
-dependency_overrides:
-  analyzer: 6.2.0
-  dart_style: 2.3.6
-
 dependencies:
+  analyzer: 7.4.5
+  dart_style: 3.1.0
   flutter:
     sdk: flutter
 
@@ -19,8 +17,8 @@ dev_dependencies:
   # flutter_lints: 1.0.4
   flutter_test:
     sdk: flutter
-  intl: ^0.20.2
-  intl_utils: ^2.8.10
+  intl: 0.20.2
+  intl_utils: 2.8.7
 
 flutter_intl:
   enabled: true

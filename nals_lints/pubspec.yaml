@@ -6,12 +6,10 @@ publish_to: none
 environment:
   sdk: ">=3.0.5 <4.0.0"
 
-dependency_overrides:
-  analyzer: 6.2.0
-  vm_service: 14.3.1
-  hotreloader: 4.1.0
-  build_resolvers: 2.4.1
-
 dependencies:
-  custom_lint_builder: ^0.7.5
-  source_gen: ^2.0.0
+  analyzer: 7.4.5
+  build_resolvers: 2.4.4
+  custom_lint_builder: 0.7.5
+  hotreloader: 4.3.0
+  source_gen: 2.0.0
+  vm_service: 15.0.2

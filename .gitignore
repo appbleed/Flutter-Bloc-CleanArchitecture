@@ -66,4 +66,3 @@ env/
 .fvm/
 *.mdb
 app/android/app/.cxx/*
-android/app/.cxx/*

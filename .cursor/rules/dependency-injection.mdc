@@ -1,0 +1,22 @@
+---
+description: 
+globs: **/di/**/*.dart
+alwaysApply: false
+---
+---
+description: Guidelines for setting up and using Dependency Injection with get_it.
+globs:
+  - "**/di/**/*.dart"
+type: AutoAttached
+---
+Use `get_it` for Dependency Injection:
+1.  Initialize `get_it` before `runApp()` by calling a setup function (e.g., `configureDependencies()` or `serviceLocatorInit()`).
+2.  Define registrations (singletons, factories) in a dedicated file (e.g., `lib/di/injection.dart`).
+3.  Register dependencies layer by layer: Data Sources -> Repositories -> Use Cases -> Blocs/Cubits.
+4.  Inject dependencies via constructors.
+5.  Retrieve instances in the UI layer using `getIt<MyBloc>()` or `getIt<MyUseCase>()` where necessary (e.g., when providing Blocs via `BlocProvider.value` or creating them in `initState`).
+6.  Use `registerLazySingleton` for services that should be created only when first needed.
+7.  Use `registerFactory` for objects that need a new instance every time (like Blocs if not managed by `BlocProvider`).
+8.  Consider using `injectable` package for auto-generating dependency registration code.
+9.  Ensure proper disposal of resources in app termination with `GetIt.I.reset()` or individual unregistration.
+10. Use environment-specific modules for different configurations (dev, test, prod).

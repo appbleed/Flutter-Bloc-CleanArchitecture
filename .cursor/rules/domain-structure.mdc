@@ -1,0 +1,18 @@
+---
+description: 
+globs: **/domain/**/*.dart
+alwaysApply: false
+---
+---
+description: Defines the structure and allowed components within the Domain layer.
+globs:
+  - "**/domain/**/*.dart"
+type: AutoAttached
+---
+The Domain layer contains the core business logic and rules, independent of UI and data sources. It MUST consist ONLY of:
+1.  **Entities:** Plain Dart objects representing core business concepts. They should be immutable. Use `freezed` or `equatable` for value equality and immutability. Entities should not contain framework-specific code.
+2.  **Use Cases (Interactors):** Classes encapsulating specific business operations or user actions. Each use case should have a single responsibility. They orchestrate calls to Repository interfaces but contain no platform-specific code. Name use cases descriptively based on the action (e.g., `GetUserProfileUseCase`, `SubmitOrderUseCase`).
+3.  **Repository Interfaces (Abstract Classes):** Define the contracts (methods) for data operations required by the use cases. These are abstractions; implementations reside in the Data layer. They specify *what* data operations are needed, not *how* they are performed.
+4.  **Failures:** Domain-specific error types that represent business failures, not technical exceptions. Use the Either pattern from dartz for returning success/failure results.
+5.  **Value Objects:** Small, validated objects that represent specific business values with their own validation rules (e.g., EmailAddress, Password, Username).
+6.  **Core Utilities:** Base classes, common interfaces, and shared domain functionality.

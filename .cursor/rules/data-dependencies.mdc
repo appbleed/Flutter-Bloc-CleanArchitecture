@@ -1,0 +1,20 @@
+---
+description: 
+globs: **/data/**/*.dart
+alwaysApply: false
+---
+---
+description: Enforces dependency rules for the Data layer.
+globs:
+  - "**/data/**/*.dart"
+type: AutoAttached
+---
+Data layer code:
+- MUST implement interfaces defined in the Domain layer (Repository interfaces).
+- CAN depend on Domain layer entities (for mapping purposes).
+- MUST NOT import or depend on any UI layer components (`package:*/ui/**`).
+- CAN use specific data handling packages (`dio`, `hive`, `sqflite`, AWS SDKs, etc.).
+- MUST handle error mapping from external sources to domain failure types.
+- SHOULD implement proper caching strategies where appropriate.
+- MUST NOT contain business logic (that belongs in domain layer).
+- CAN use Firebase services, GraphQL clients, and REST API clients.

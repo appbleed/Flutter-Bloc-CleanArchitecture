@@ -1,0 +1,26 @@
+---
+description: 
+globs: **/ui/**/*.dart
+alwaysApply: false
+---
+---
+description: Defines the structure of the Presentation layer (UI and State Management).
+globs:
+  - "**/ui/**/*.dart"
+type: AutoAttached
+---
+The UI layer is responsible for displaying the UI and handling user interactions. It consists of:
+1.  **Pages/Screens:** Top-level widgets representing application screens, often containing a `Scaffold`. They compose smaller Widgets.
+2.  **Widgets:** Reusable UI components. Keep widgets small and focused on presentation. Use `const` constructors where possible.
+3.  **Blocs/Cubits:** Manage the state for Pages or complex Widgets. They receive events, interact with Domain Use Cases, and emit states.
+4.  **Events:** Represent user actions or other triggers for state changes. Define as distinct classes.
+5.  **States:** Represent the UI state at a given time. Define as immutable classes, often using `freezed` or `equatable`. Model different UI conditions (loading, success, error) with distinct states.
+6.  **Models:** View-specific models that format domain entities for display.
+7.  **Routes:** Navigation definitions using auto_route or other routing solutions.
+8.  **Theme:** UI styling definitions and consistent design patterns.
+
+Best practices:
+- Keep UI components decoupled from business logic
+- Use BlocProvider to inject state management
+- Split complex screens into smaller widget components
+- Handle loading, success, and error states consistently

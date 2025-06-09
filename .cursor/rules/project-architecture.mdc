@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Defines the overall project architecture
+type: Always
+---
+# Project Architecture Rule
+
+This rule describes the overall monorepo structure, Clean Architecture principles, and package organization for the Mozome Flutter project.
+
+## Structure
+
+- **App Module**: app UI, Bloc (UI logic), resources, entry point (`main()`)
+- **Domain Module**: Entities (business logic), use cases (app logic), abstract repositories, app navigator, domain config
+- **Data Module**: Repository implementations (CRUD/data logic), data config, data sources (Firestore, REST, GraphQL, Shared Preferences, Remote Config, Database, Cloud Messaging), mappers
+- **Resources Module**: Localization files, resource class `S`
+- **Shared Module**: Utils, extensions, helpers, constants, build config, common utils, widget, theme, locale
+- **Initializer Module**: App initializer and bootstrap logic
+- **Tools Module**: Environment, build and deployment configurations
+
+## Principles
+
+- Strict separation of concerns between layers
+- Unidirectional data flow
+- Dependency inversion: App/Data depend on Domain abstractions
+- Shared code and resources for consistency
+- Independent testability of each layer
+- Clear boundaries between modules
+- Single responsibility of components
+- Clean dependency graph with domain at the core
+
+## Data Flow
+
+- UI actions trigger Bloc events
+- Blocs call Domain use cases
+- Use cases interact with repository interfaces
+- Repository implementations fetch from data sources
+- Data flows back through the same layers in reverse
+
+## References
+
+- [README.md](mdc:README.md)
+- [project_architecture.png](mdc:docs/images/project_architecture.png)

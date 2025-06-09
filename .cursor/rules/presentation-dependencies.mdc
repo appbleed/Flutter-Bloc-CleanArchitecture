@@ -1,0 +1,20 @@
+---
+description: 
+globs: **/ui/**/*.dart
+alwaysApply: false
+---
+---
+description: Enforces dependency rules for the Presentation layer.
+globs:
+  - "**/ui/**/*.dart"
+type: AutoAttached
+---
+UI layer code:
+- CAN depend on the Domain layer (specifically Use Cases and Entities, injected into Blocs/Cubits).
+- MUST NOT import or depend directly on the Data layer (Repositories, Data Sources, DTOs). All data interaction goes through Domain Use Cases.
+- CAN use Flutter SDK widgets and state management packages (`flutter_bloc`).
+- MUST handle UI states for loading, success, and error conditions.
+- SHOULD implement proper error handling and user feedback.
+- MUST NOT contain business logic (that belongs in domain layer).
+- SHOULD separate UI components from state management logic.
+- SHOULD follow platform-specific design guidelines (Material/Cupertino).

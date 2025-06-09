@@ -1,0 +1,27 @@
+---
+description: 
+globs: **/test/bloc/*_bloc_test.dart,**/test/cubit/*_cubit_test.dart
+alwaysApply: false
+---
+---
+description: Guidelines for testing Blocs and Cubits.
+globs:
+  - "**/test/bloc/*_bloc_test.dart"
+  - "**/test/cubit/*_cubit_test.dart"
+type: AutoAttached
+---
+When testing Blocs/Cubits:
+1.  Use the `bloc_test` package.
+2.  Use `mocktail` or `mockito` to mock dependencies (Use Cases, Repositories if testing Use Cases).
+3.  Use `blocTest` function to structure tests:
+    - `build`: Provide the Bloc/Cubit instance with mocked dependencies.
+    - `act`: Trigger events (for Blocs) or call methods (for Cubits).
+    - `expect`: Verify the sequence of emitted states using `equals()` or matchers like `isA<StateType>()`.
+    - `verify`: Ensure mocked dependencies were called correctly.
+4.  Test all significant event/method calls and their corresponding state transitions, including success and error cases.
+5.  Isolate Bloc/Cubit logic; do not involve real data sources or UI rendering.
+6.  Test edge cases and boundary conditions.
+7.  Use `setUp` and `tearDown` for common test initialization and cleanup.
+8.  Group related tests together for better organization.
+9.  Test complex state transitions and sequences of events.
+10. Verify that error states include appropriate error messages for UI display.

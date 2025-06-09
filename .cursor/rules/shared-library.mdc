@@ -1,0 +1,41 @@
+---
+description: 
+globs: shared/**,shared/SHARED-README.md
+alwaysApply: false
+---
+---
+description: Defines the structure of the Shared library.
+globs:
+  - "shared/**"
+  - "shared/SHARED-README.md"
+type: AutoAttached
+---
+# Shared Code & Utilities Rule
+
+This rule documents the structure and usage of the shared package in the Mozome Flutter project.
+
+## Scope
+
+- Applies to: `shared/` directory and related files.
+
+## Topics
+
+- Shared utilities and helper functions
+- Common UI components and widgets
+- Theme and styling definitions
+- Configuration management
+- Shared interfaces and models
+- Cross-cutting concerns (logging, analytics, etc.)
+
+## Best Practices
+
+- Keep widgets reusable and stateless when possible
+- Define consistent theme tokens and styles
+- Maintain backward compatibility when updating shared components
+- Write unit tests for all shared utilities
+- Document component usage with examples
+
+## References
+
+- [SHARED-README.md](mdc:shared/SHARED-README.md)
+

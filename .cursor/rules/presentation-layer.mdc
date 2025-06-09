@@ -1,0 +1,43 @@
+---
+description: 
+globs: **/ui/**,**/bloc/**
+alwaysApply: false
+---
+---
+description: Guides the implementation of Presentation layer.
+globs:
+  - "**/ui/**"
+  - "**/bloc/**"
+type: AutoAttached
+alwaysApply: false
+---
+
+# UI Layer (Bloc & UI) Rule
+
+This rule documents the conventions and best practices for the UI layer in the Mozome Flutter project.
+
+## Scope
+
+- Applies to: `ui/`, `bloc/`, `ui/` directories, and Bloc/UI-related files.
+
+## Topics
+
+- Bloc pattern for state management
+- UI widgets and reusable components
+- Code generation and snippets (NALS Mobile Brain)
+- Bloc event and state conventions
+- UI testing and accessibility
+
+## Best Practices
+
+- Use Bloc for all state management (avoid setState)
+- Separate business logic from UI components
+- Dispose of all Bloc instances properly
+- Write widget and integration tests for UI flows
+- Implement proper error handling in Bloc event handlers
+- Use repository abstractions from domain layer, never directly access data sources
+- Follow the unidirectional data flow pattern: UI events → Bloc events → States → UI updates
+
+## References
+
+- [NALS_MOBILE_BRAIN_README.md](mdc:tools/nals/NALS_MOBILE_BRAIN_README.md)

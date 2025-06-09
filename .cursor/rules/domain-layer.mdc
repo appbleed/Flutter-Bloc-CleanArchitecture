@@ -1,0 +1,44 @@
+---
+description: 
+globs: domain/**,domain/DOMAIN-README.md
+alwaysApply: false
+---
+---
+description: Guides the implementation of Domain layer.
+globs:
+  - "domain/**"
+  - "domain/DOMAIN-README.md"
+type: AutoAttached
+---
+
+# Domain Layer Rule
+
+This rule documents the conventions and responsibilities of the Domain Layer in the Mozome Flutter project.
+
+## Scope
+
+- Applies to: `domain/` directory and related files.
+
+## Topics
+
+- Pure Dart business logic (no Flutter dependencies)
+- Entities: core business objects
+- Use Cases: app logic and business rules
+- Abstract Repository: contracts for data access
+- App Navigator: navigation contracts
+- Domain Config: configuration for domain logic
+
+## Best Practices
+
+- Keep the domain layer framework-agnostic
+- No direct dependencies on data or ui layers
+- Write unit tests for all business logic
+- Use abstract classes for repositories to enforce contract
+- Keep entities immutable
+- Define clear boundaries between business logic and infrastructure
+- Model failures as value objects, not exceptions
+
+## References
+
+- [DOMAIN-README.md](mdc:domain/DOMAIN-README.md)
+

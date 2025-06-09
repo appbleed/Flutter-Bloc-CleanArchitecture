@@ -1,0 +1,22 @@
+---
+description: 
+globs: **/test/repository/*_test.dart,**/test/usecase/*_test.dart
+alwaysApply: false
+---
+---
+description: Guidelines for testing Repositories and Use Cases.
+globs:
+  - "**/test/repository/*_test.dart"
+  - "**/test/usecase/*_test.dart"
+type: AutoAttached
+---
+When writing unit tests for Repositories or Use Cases:
+1.  Use `flutter_test` and `mocktail` or `mockito`.
+2.  For Use Case tests: Mock the Repository interface(s) it depends on. Verify that the use case calls the correct repository methods with expected arguments and handles success/error responses appropriately.
+3.  For Repository Implementation tests: Mock the Data Source(s) it depends on. Verify that the repository calls the correct data source methods, handles data source responses/errors, and performs mapping correctly.
+4.  Focus on testing the logic within the unit, isolating it from external dependencies.
+5.  Test both success and error paths thoroughly.
+6.  Verify caching mechanisms work correctly if implemented.
+7.  Test edge cases and boundary conditions.
+8.  Use descriptive test names that explain the expected behavior.
+9.  Group related tests together for better organization.

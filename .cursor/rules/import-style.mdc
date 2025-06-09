@@ -1,0 +1,20 @@
+---
+description: 
+globs: **/lib/**/*.dart,**/test/**/*.dart
+alwaysApply: false
+---
+---
+description: Enforces consistent package import style.
+globs:
+  - "**/lib/**/*.dart"
+  - "**/test/**/*.dart"
+type: AutoAttached
+---
+- Always use `package:` imports, even for files within the same package (e.g., `import 'package:mozome_customer/feature/auth/bloc/auth_bloc.dart';`).
+- Comply with the `always_use_package_imports` lint rule.
+- Do NOT use relative imports (`../` or `../../`) for files inside the `lib/` directory.
+- Order imports: `dart:*`, `package:flutter/*`, external packages (alphabetical), project packages (`package:mozome_*/*`, alphabetical).
+- Group imports by type with a blank line between groups.
+- Remove unused imports.
+- Avoid wildcard imports (`import 'package:foo/*'`).
+- Use explicit imports for clarity (`show` keyword) when importing specific members.

@@ -1,0 +1,24 @@
+---
+description: 
+globs: **/pages/**/*.dart,**/widgets/**/*.dart
+alwaysApply: false
+---
+---
+description: Guides how UI Widgets interact with Blocs/Cubits.
+globs:
+  - "**/pages/**/*.dart"
+  - "**/widgets/**/*.dart"
+type: AutoAttached
+---
+Interaction between UI (Pages/Widgets) and Blocs/Cubits:
+1.  Use `BlocProvider` to make a Bloc/Cubit instance available down the widget tree. Often placed above the Page level.
+2.  Use `BlocBuilder` to rebuild parts of the UI in response to state changes. Rebuild only necessary widgets for performance.
+3.  Use `BlocListener` for handling "one-time" actions based on state changes (e.g., showing Snackbars, navigation).
+4.  Use `BlocConsumer` when both rebuilding UI and performing actions are needed.
+5.  Dispatch Events to Blocs using `context.read<MyBloc>().add(MyEvent())` or `BlocProvider.of<MyBloc>(context).add(MyEvent())`.
+6.  Call Cubit methods using `context.read<MyCubit>().myMethod()` or `BlocProvider.of<MyCubit>(context).myMethod()`.
+7.  Widgets should remain UI-focused; delegate business logic interaction to the Bloc/Cubit.
+8.  Use `MultiBlocProvider` when a screen depends on multiple Blocs.
+9.  Consider using `RepositoryProvider` for dependency injection of repositories.
+10. Implement proper loading and error states in the UI for all asynchronous operations.
+11. Use `BlocSelector` for optimization when you only need a specific part of the state.

@@ -1,0 +1,54 @@
+---
+description: 
+globs: app/**,app/APP-README.md
+alwaysApply: false
+---
+---
+description: Guides the implementation of Customer App.
+globs:
+  - "app/**"
+  - "app/APP-README.md"
+type: AutoAttached
+---
+
+# Customer App Rule
+
+This rule documents the architecture, features, and implementation details for the Mozome Customer App.
+
+## Scope
+
+- Applies to: `app/` directory and related files.
+
+## Topics
+
+- Clean Architecture structure for the customer app
+- State management with Bloc
+- Navigation and routing
+- Dependency injection and configuration
+- UI features and user experience
+- Testing and best practices
+
+## Key Features
+
+- User authentication and profile management
+- Service discovery and browsing
+- Booking and scheduling services
+- Service provider ratings and reviews
+- Payment processing and wallet management
+- Chat with service providers
+- Notifications and reminders
+
+## Implementation Guidelines
+
+- Follow Clean Architecture principles with strict layer separation
+- Use BLoC pattern for state management
+- Implement smooth onboarding flow
+- Create accessible and user-friendly interfaces
+- Support offline mode where appropriate
+- Optimize performance for varying network conditions
+- Implement comprehensive error handling and recovery
+
+## References
+
+- [APP-README.md](mdc:app/APP-README.md)
+

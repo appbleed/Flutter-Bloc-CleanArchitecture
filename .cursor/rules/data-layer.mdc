@@ -1,0 +1,42 @@
+---
+description: 
+globs: data/**,data/DATA-README.md
+alwaysApply: false
+---
+---
+description: Guides the implementation of Data layer.
+globs:
+  - "data/**"
+  - "data/DATA-README.md"
+type: AutoAttached
+---
+
+# Data Layer Rule
+
+This rule documents the conventions and responsibilities of the Data Layer in the Mozome Flutter project.
+
+## Scope
+
+- Applies to: `data/` directory and related files.
+
+## Topics
+
+- Repository implementations (CRUD/data logic)
+- Data sources: Firestore, REST, GraphQL, Shared Preferences, Remote Config, Database, Cloud Messaging
+- Mappers for data transformation
+- Data Config: environment-specific configuration
+- Dependency injection for data services
+- Error handling and functional programming patterns
+
+## Best Practices
+
+- Implement domain contracts
+- Handle all external data sources and persistence
+- Write unit and integration tests for repositories and data sources
+- Use Either<Failure, T> pattern for error handling
+- Implement proper caching strategies where appropriate
+- Follow mapper pattern for converting DTOs to domain entities
+
+## References
+
+- [DATA-README.md](mdc:data/DATA-README.md)

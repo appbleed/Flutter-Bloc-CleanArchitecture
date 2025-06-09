@@ -1,0 +1,30 @@
+---
+description: 
+globs: **/domain/**/*.dart
+alwaysApply: false
+---
+---
+description: Enforces strict dependency rules for the Domain layer.
+globs:
+  - "**/domain/**/*.dart"
+type: AutoAttached
+---
+CRITICAL: Domain layer code MUST NOT import or depend on:
+- Any Flutter UI packages (`package:flutter/**`).
+- Any Data layer implementations (`package:*/data/**`).
+- Any Presentation layer components (`package:*/ui/**`).
+- Specific database, network, or device APIs.
+- Third-party service implementations (Firebase, AWS, etc.).
+
+Allowed dependencies:
+- Dart SDK (`dart:*`).
+- Core packages like `freezed_annotation`, `equatable`.
+- Other Domain layer components (entities, other use cases, repository interfaces).
+- Approved, framework-agnostic utility packages.
+- Functional programming utilities (e.g., `dartz` for Either type).
+- Dependency injection annotations (e.g., `injectable`).
+
+Best practices:
+- Define abstract repository interfaces for data access.
+- Use Either<Failure, Success> pattern for error handling.
+- Keep entities immutable with proper value equality.

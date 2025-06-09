@@ -1,0 +1,23 @@
+---
+description: 
+globs: **/bloc/*_bloc.dart,**/cubit/*_cubit.dart
+alwaysApply: false
+---
+---
+description: Guides the implementation of Blocs and Cubits.
+globs:
+  - "**/bloc/*_bloc.dart"
+  - "**/cubit/*_cubit.dart"
+type: AutoAttached
+---
+When implementing a Bloc or Cubit:
+1.  Inject required Domain Use Cases via the constructor. Do NOT inject Repositories directly.
+2.  Define clear, distinct Event classes (for Blocs).
+3.  Define immutable State classes representing all possible UI states (initial, loading, success with data, failure with error). Use `equatable` or `freezed`.
+4.  In Blocs, map Events to States using the `on<Event>((event, emit) {... })` handler. Call Use Cases within these handlers.
+5.  In Cubits, define methods that call Use Cases and emit new states using `emit()`.
+6.  Handle errors from Use Cases and emit appropriate error states.
+7.  Keep Blocs/Cubits focused on state management logic; avoid complex UI logic.
+8.  Use `freezed` for generating event and state classes when possible
+9.  Implement proper subscriptions and dispose logic in close() method
+10. Add meaningful BlocObserver for debugging and analytics tracking

@@ -1,0 +1,64 @@
+---
+description: 
+globs: **/test/**,**/integration_test/**
+alwaysApply: false
+---
+---
+description: Guides the implementation of Domain layer.
+globs:
+  - "**/test/**"
+  - "**/integration_test/**"
+type: AutoAttached
+---
+
+# Testing & Quality Rule
+
+This rule documents the testing conventions and best practices for the Mozome Flutter project.
+
+## Scope
+
+- Applies to: `test/`, `integration_test/`, and any file ending with `_test.dart`.
+
+## Purpose
+
+- Testing is responsible for:
+  - Ensuring code correctness and reliability.
+  - Maintaining high test coverage (target: 80%+).
+  - Supporting unit, widget, and integration tests.
+
+## Structure
+
+- **Unit Tests**: Test individual functions, classes, and logic in isolation.
+- **Widget Tests**: Test UI components and their interactions.
+- **Integration Tests**: Test end-to-end flows across modules.
+- **Mocks & Fakes**: Use mockito or similar for dependency mocking.
+
+## Best Practices
+
+- **Write tests for all new features and bug fixes.**
+- **Organize tests** to mirror the source directory structure.
+- **Use descriptive test names** and group related tests.
+- **Run tests locally before pushing or creating a PR.**
+- **Check coverage reports** and address gaps (target: 80%+ coverage).
+- **Document complex test setups and edge cases.**
+- **Mock external dependencies** to ensure tests are reliable and fast.
+- **Use test doubles** (mocks, stubs, fakes) appropriately for different scenarios.
+- **Follow the AAA pattern** (Arrange, Act, Assert) in all test cases.
+
+## Example
+
+```dart
+test('should return user when repository succeeds', () async {
+  // Arrange
+  when(mockRepository.getUser(any)).thenAnswer(...);
+  // Act
+  final result = await useCase('userId');
+  // Assert
+  expect(result, isA<User>());
+});
+```
+
+## References
+
+- [Flutter Testing Docs](mdc:https:/docs.flutter.dev/testing)
+- [Effective Dart: Testing](mdc:https:/dart.dev/guides/language/effective-dart/testing)

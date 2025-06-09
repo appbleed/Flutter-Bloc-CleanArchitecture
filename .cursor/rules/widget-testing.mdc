@@ -1,0 +1,24 @@
+---
+description: 
+globs: **/test/**/pages/*_test.dart,**/test/**/widgets/*_test.dart
+alwaysApply: false
+---
+---
+description: Guidelines for testing Widgets.
+globs:
+  - "**/test/**/pages/*_test.dart"
+  - "**/test/**/widgets/*_test.dart"
+type: AutoAttached
+---
+When writing widget tests:
+1.  Use `flutter_test` package.
+2.  Mock Blocs/Cubits that the widget depends on. Use `MockBloc` / `MockCubit` from `bloc_test` or create simple fake implementations.
+3.  Use `whenListen` from `bloc_test` to stub the state stream of mocked Blocs/Cubits, simulating different UI states (loading, success, error).
+4.  Wrap the widget under test with necessary providers (`BlocProvider`, `MaterialApp`, etc.).
+5.  Use `tester.pumpWidget()` to build the widget.
+6.  Use `find` methods (`find.text`, `find.byType`, `find.byKey`) to locate widgets.
+7.  Use `expect` with matchers (`findsOneWidget`, `findsNothing`, etc.) to verify UI content based on the mocked state.
+8.  Simulate user interactions using `tester.tap()`, `tester.enterText()`, etc., and verify resulting state changes or event dispatches if applicable.
+9.  Test edge cases such as error states, empty states, and loading indicators.
+10. Structure tests with appropriate setup and teardown to avoid duplication.
+11. Use `testWidgets` to organize widget tests into meaningful groups.

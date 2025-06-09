@@ -1,0 +1,22 @@
+---
+description: 
+globs: **/repository/*repository_impl.dart
+alwaysApply: false
+---
+---
+description: Guides the implementation of Data Layer Repositories.
+globs:
+  - "**/repository/*repository_impl.dart"
+type: AutoAttached
+---
+When implementing a Repository interface from the Domain layer:
+1.  Inject necessary Data Source interfaces/classes via the constructor.
+2.  Implement all methods defined in the Domain Repository interface.
+3.  Fetch data from the appropriate Data Source(s).
+4.  Use Mappers to convert Data Source DTOs/Models to Domain Entities before returning.
+5.  Handle potential errors from Data Sources (e.g., network exceptions, database errors) and map them to domain-specific errors or return appropriate results (e.g., using `Either` type from `dartz` or custom Result classes).
+6.  Implement caching logic here if required.
+7.  Consider implementing repository methods following the offline-first approach where appropriate.
+8.  Use proper error handling and logging for debugging.
+9.  Ensure thread safety for repositories that may be accessed concurrently.
+10. Consider implementing retry logic for critical network operations.

@@ -1,0 +1,56 @@
+---
+description: 
+globs: initializer/**,initializer/INITIALIZER-README.md
+alwaysApply: false
+---
+---
+description: applicable for the initializer module.
+globs:
+  - "initializer/**"
+type: AutoAttached
+---
+# Initializer & Bootstrap Rule
+
+This rule documents the conventions and responsibilities of the Initializer Module in the Mozome Flutter project.
+
+## Scope
+
+- Applies to: `initializer/`, `main.dart`, dependency injection setup, and environment configuration.
+
+## Purpose
+
+- The Initializer Module is responsible for:
+  - Bootstrapping the application.
+  - Setting up dependency injection (DI) containers.
+  - Loading environment-specific configuration.
+  - Ensuring all modules (App, Domain, Data, Shared, Resources) are properly initialized before app launch.
+
+## Structure
+
+- **initializer/lib/src/di/**: Contains DI setup and registration logic.
+- **main.dart**: Entry point that calls the initializer before running the app.
+- **App Initializer**: Central class/function that orchestrates setup (DI, config, etc).
+
+## Best Practices
+
+- **Centralize all initialization logic** in the Initializer Module.
+- **Do not run app logic** (UI, data fetching, etc.) before initialization is complete.
+- **Register all dependencies** (repositories, services, mappers, etc.) in the DI container.
+- **Load environment variables/config** before initializing services that depend on them.
+- **Log initialization steps** for easier debugging.
+
+## Example
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppInitializer.init(); // Sets up DI, config, etc.
+  runApp(MyApp());
+}
+```
+
+## References
+
+- [Effective Dart: Initialization](mdc:https:/dart.dev/guides/language/effective-dart/usage#initialize-variables)
+- [Flutter Dependency Injection Patterns](mdc:https:/pub.dev/packages/get_it)
+- [Firebase Initialization](mdc:https:/firebase.flutter.dev/docs/overview)
